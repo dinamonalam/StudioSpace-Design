@@ -7,7 +7,7 @@ export async function connectDB(): Promise<void> {
     mongoose.set("strictQuery", true);
     await mongoose.connect(uri, {
       serverSelectionTimeoutMS: 5000,
-    });
+    } as mongoose.ConnectOptions);
     console.log(`[StudioSpace Database] Connected to MongoDB successfully at ${uri.split("@").pop()}`);
   } catch (err: unknown) {
     const error = err as Error;

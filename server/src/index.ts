@@ -18,7 +18,10 @@ const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:3000";
 // CORS with credentials for HTTPOnly cookie transmission
 app.use(
   cors({
-    origin: (origin, callback) => {
+    origin: (
+      origin: string | undefined,
+      callback: (err: Error | null, allow?: boolean) => void
+    ) => {
       // Allow localhost, local network, and configured CLIENT_URL
       if (!origin || origin.includes("localhost") || origin === CLIENT_URL) {
         callback(null, true);
