@@ -1,4 +1,12 @@
 import mongoose from "mongoose";
+import dns from "dns";
+
+// Ensure resilient SRV resolution across ISP DNS routers
+try {
+  dns.setServers(["8.8.8.8", "8.8.4.4", "1.1.1.1"]);
+} catch {
+  // Use default system DNS if override is restricted
+}
 
 export async function connectDB(): Promise<void> {
   const uri = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/studiospace";
