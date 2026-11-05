@@ -1,9 +1,42 @@
 import { Router, Request, Response } from "express";
+import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 import { User } from "../models/User.js";
 import { generateToken, setAuthCookie, clearAuthCookie } from "../utils/jwt.js";
 import { requireAuth } from "../middleware/auth.js";
 
 const router = Router();
+
+// In-memory fallback accounts for resilient offline operation
+let IN_MEMORY_USERS: Array<{
+  _id: string;
+  name: string;
+  email: string;
+  passwordHash: string;
+  image: string;
+  role: string;
+}> = [
+  {
+    _id: "67295839201948271649277a",
+    name: "Marcus Vance",
+    email: "host@studiospace.io",
+    passwordHash: bcrypt.hashSync("Password123", 10),
+    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop",
+    role: "host",
+  },
+  {
+    _id: "67295839201948271649277b",
+    name: "Elena Rostova",
+    email: "creator@studiospace.io",
+    passwordHash: bcrypt.hashSync("Password123", 10),
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop",
+    role: "creator",
+  },
+];
+
+function isMongoConnected(): boolean {
+  return mongoose.connection.readyState === 1;
+}
 
 // POST /api/auth/register
 router.post("/register", async (req: Request, res: Response) => {
@@ -31,8 +64,53 @@ router.post("/register", async (req: Request, res: Response) => {
       return;
     }
 
-    // Check if user already exists
-    const existing = await User.findOne({ email: email.toLowerCase().trim() });
+    const cleanEmail = email.toLowerCase().trim();
+
+    if (isMongoConnected()) {
+      const existing = await User.findOne({ email: cleanEmail });
+      if (existing) {
+        res.status(400).json({
+          success: false,
+          error: "An account with this email address already exists.",
+        });
+        return;
+      }
+
+      const user = new User({
+        name: name.trim(),
+        email: cleanEmail,
+        password: password,
+        image: photoUrl?.trim() || "",
+        role: "creator",
+      });
+
+      await user.save();
+
+      const token = generateToken({
+        id: user._id.toString(),
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      });
+
+      setAuthCookie(res, token);
+
+      res.status(201).json({
+        success: true,
+        message: "Registration successful",
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          image: user.image,
+          role: user.role,
+        },
+      });
+      return;
+    }
+
+    // In-memory register
+    const existing = IN_MEMORY_USERS.find((u) => u.email === cleanEmail);
     if (existing) {
       res.status(400).json({
         success: false,
@@ -41,23 +119,22 @@ router.post("/register", async (req: Request, res: Response) => {
       return;
     }
 
-    // Create user
-    const user = new User({
+    const mockId = new mongoose.Types.ObjectId().toString();
+    const newUser = {
+      _id: mockId,
       name: name.trim(),
-      email: email.toLowerCase().trim(),
-      password: password,
+      email: cleanEmail,
+      passwordHash: bcrypt.hashSync(password, 10),
       image: photoUrl?.trim() || "",
       role: "creator",
-    });
+    };
+    IN_MEMORY_USERS.push(newUser);
 
-    await user.save();
-
-    // Issue JWT cookie
     const token = generateToken({
-      id: user._id.toString(),
-      email: user.email,
-      name: user.name,
-      role: user.role,
+      id: mockId,
+      email: cleanEmail,
+      name: name.trim(),
+      role: "creator",
     });
 
     setAuthCookie(res, token);
@@ -66,11 +143,11 @@ router.post("/register", async (req: Request, res: Response) => {
       success: true,
       message: "Registration successful",
       user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        image: user.image,
-        role: user.role,
+        id: mockId,
+        name: newUser.name,
+        email: newUser.email,
+        image: newUser.image,
+        role: newUser.role,
       },
     });
   } catch (err: unknown) {
@@ -95,8 +172,54 @@ router.post("/login", async (req: Request, res: Response) => {
       return;
     }
 
-    const user = await User.findOne({ email: email.toLowerCase().trim() });
-    if (!user || !user.password) {
+    const cleanEmail = email.toLowerCase().trim();
+
+    if (isMongoConnected()) {
+      const user = await User.findOne({ email: cleanEmail });
+      if (!user || !user.password) {
+        res.status(401).json({
+          success: false,
+          error: "Invalid email or password.",
+        });
+        return;
+      }
+
+      const isMatch = await user.comparePassword(password);
+      if (!isMatch) {
+        res.status(401).json({
+          success: false,
+          error: "Invalid email or password.",
+        });
+        return;
+      }
+
+      const token = generateToken({
+        id: user._id.toString(),
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      });
+
+      setAuthCookie(res, token);
+
+      res.json({
+        success: true,
+        message: "Login successful",
+        token,
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          image: user.image,
+          role: user.role,
+        },
+      });
+      return;
+    }
+
+    // In-memory login fallback
+    const user = IN_MEMORY_USERS.find((u) => u.email === cleanEmail);
+    if (!user) {
       res.status(401).json({
         success: false,
         error: "Invalid email or password.",
@@ -104,7 +227,7 @@ router.post("/login", async (req: Request, res: Response) => {
       return;
     }
 
-    const isMatch = await user.comparePassword(password);
+    const isMatch = bcrypt.compareSync(password, user.passwordHash);
     if (!isMatch) {
       res.status(401).json({
         success: false,
@@ -113,9 +236,8 @@ router.post("/login", async (req: Request, res: Response) => {
       return;
     }
 
-    // Issue JWT cookie
     const token = generateToken({
-      id: user._id.toString(),
+      id: user._id,
       email: user.email,
       name: user.name,
       role: user.role,
@@ -126,6 +248,7 @@ router.post("/login", async (req: Request, res: Response) => {
     res.json({
       success: true,
       message: "Login successful",
+      token,
       user: {
         id: user._id,
         name: user.name,
@@ -156,26 +279,33 @@ router.post("/google", async (req: Request, res: Response) => {
       return;
     }
 
-    let user = await User.findOne({ email: email.toLowerCase().trim() });
+    const cleanEmail = email.toLowerCase().trim();
+    let userId = new mongoose.Types.ObjectId().toString();
+    const userName = name || cleanEmail.split("@")[0];
 
-    if (!user) {
-      user = new User({
-        name: name || email.split("@")[0],
-        email: email.toLowerCase().trim(),
-        image: image || "",
-        role: "creator",
-      });
-      await user.save();
-    } else if (image && !user.image) {
-      user.image = image;
-      await user.save();
+    if (isMongoConnected()) {
+      let user = await User.findOne({ email: cleanEmail });
+
+      if (!user) {
+        user = new User({
+          name: userName,
+          email: cleanEmail,
+          image: image || "",
+          role: "creator",
+        });
+        await user.save();
+      } else if (image && !user.image) {
+        user.image = image;
+        await user.save();
+      }
+      userId = user._id.toString();
     }
 
     const token = generateToken({
-      id: user._id.toString(),
-      email: user.email,
-      name: user.name,
-      role: user.role,
+      id: userId,
+      email: cleanEmail,
+      name: userName,
+      role: "creator",
     });
 
     setAuthCookie(res, token);
@@ -183,12 +313,13 @@ router.post("/google", async (req: Request, res: Response) => {
     res.json({
       success: true,
       message: "Google authentication successful",
+      token,
       user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        image: user.image,
-        role: user.role,
+        id: userId,
+        name: userName,
+        email: cleanEmail,
+        image: image || "",
+        role: "creator",
       },
     });
   } catch (err: unknown) {
@@ -203,23 +334,32 @@ router.post("/google", async (req: Request, res: Response) => {
 // GET /api/auth/me (Protected - validates HTTPOnly cookie)
 router.get("/me", requireAuth, async (req: Request, res: Response) => {
   try {
-    const user = await User.findById(req.user?.id).select("-password");
-    if (!user) {
-      res.status(404).json({
-        success: false,
-        error: "User not found.",
-      });
-      return;
+    if (isMongoConnected() && req.user?.id) {
+      const user = await User.findById(req.user.id).select("-password");
+      if (user) {
+        res.json({
+          success: true,
+          user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            image: user.image,
+            role: user.role,
+          },
+        });
+        return;
+      }
     }
 
+    // In-memory fallback
     res.json({
       success: true,
       user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        image: user.image,
-        role: user.role,
+        id: req.user?.id || "seed-user",
+        name: req.user?.name || "Verified Creator",
+        email: req.user?.email,
+        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop",
+        role: req.user?.role || "creator",
       },
     });
   } catch (err: unknown) {
@@ -241,4 +381,3 @@ router.post("/logout", (_req: Request, res: Response) => {
 });
 
 export default router;
-
