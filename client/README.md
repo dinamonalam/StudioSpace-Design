@@ -12,8 +12,8 @@
 
 ## 🌐 Live Application URLs
 
-- **Client Live Website**: `[Insert your live Vercel URL here]`
-- **Server API Live Backend**: `[Insert your live Render/Railway URL here]`
+- **Client Live Website**: `[Insert your live Vercel URL after deploying Step 2]`
+- **Server API Live Backend**: [https://studiospace-server-hzs8.onrender.com](https://studiospace-server-hzs8.onrender.com)
 
 ---
 
