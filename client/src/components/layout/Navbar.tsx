@@ -223,18 +223,22 @@ export function Navbar() {
         <div className="flex lg:hidden items-center gap-2">
           <ThemeToggle />
           <button
+            type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-2.5 rounded-xl border border-[#32363C] bg-[#24272B] text-[#F5F0E8] hover:text-[#E7A65A] focus:outline-none"
             aria-label="Toggle navigation menu"
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-navigation"
+          ></button>
         </div>
       </div>
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-[#32363C] bg-[#17191C]/98 backdrop-blur-2xl px-6 py-6 space-y-4 animate-in slide-in-from-top-4 duration-200">
+        <div
+          id="mobile-navigation"
+          className="lg:hidden border-t border-[#32363C] bg-[#17191C]/98 backdrop-blur-2xl px-6 py-6 space-y-4 animate-in slide-in-from-top-4 duration-200"
+        >
           <nav className="flex flex-col space-y-2">
             {NAV_LINKS.map((link) => {
               const isActive =
