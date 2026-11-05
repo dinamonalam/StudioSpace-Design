@@ -333,3 +333,4 @@ export function downloadBookingInvoicePdf(booking: Booking): void {
     printWindow.document.close();
   }
 }
+
