@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import { Booking, type IBooking } from "../models/Booking.js";
 import { Studio } from "../models/Studio.js";
 import { requireAuth } from "../middleware/auth.js";
+import { validateBody } from "../middleware/validate.js";
+import { bookingSchema } from "../validators/index.js";
 
 const router = Router();
 
@@ -101,7 +103,7 @@ router.get("/my-bookings", requireAuth, async (req: Request, res: Response) => {
 // Enforces reading verified creatorName and creatorEmail from session (Req 9)
 // Overlap condition: existing.startTime < requested.endTime AND existing.endTime > requested.startTime
 // -----------------------------------------------------------------------------
-router.post("/", requireAuth, async (req: Request, res: Response) => {
+router.post("/", requireAuth, validateBody(bookingSchema), async (req: Request, res: Response) => {
   try {
     const { studioId, studioTitle, hostEmail, bookingDate, startTime, endTime, hourlyRate, totalPrice } =
       req.body;

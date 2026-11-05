@@ -4,6 +4,8 @@ import bcrypt from "bcryptjs";
 import { User } from "../models/User.js";
 import { generateToken, setAuthCookie, clearAuthCookie } from "../utils/jwt.js";
 import { requireAuth } from "../middleware/auth.js";
+import { validateBody } from "../middleware/validate.js";
+import { registerSchema, loginSchema } from "../validators/index.js";
 
 const router = Router();
 
@@ -39,7 +41,7 @@ function isMongoConnected(): boolean {
 }
 
 // POST /api/auth/register
-router.post("/register", async (req: Request, res: Response) => {
+router.post("/register", validateBody(registerSchema), async (req: Request, res: Response) => {
   try {
     const { name, email, password, photoUrl } = req.body;
 
@@ -160,7 +162,7 @@ router.post("/register", async (req: Request, res: Response) => {
 });
 
 // POST /api/auth/login
-router.post("/login", async (req: Request, res: Response) => {
+router.post("/login", validateBody(loginSchema), async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 

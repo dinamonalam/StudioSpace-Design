@@ -51,9 +51,16 @@ app.use("/api/wishlists", wishlistRoutes);
 app.use("/api/bookings", bookingRoutes);
 
 // Global Error Handler
-app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   console.error("[StudioSpace Server Error]:", err);
-  res.status(500).json({
+  if (err.name === "UnauthorizedError" || err.name === "JsonWebTokenError") {
+    res.status(401).json({
+      success: false,
+      error: "Invalid or expired authorization token.",
+    });
+    return;
+  }
+  res.status(err.status || 500).json({
     success: false,
     error: err.message || "Internal server error occurred.",
   });

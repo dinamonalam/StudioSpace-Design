@@ -2,6 +2,8 @@ import { Router, Request, Response } from "express";
 import mongoose from "mongoose";
 import { Studio, type IStudio } from "../models/Studio.js";
 import { requireAuth } from "../middleware/auth.js";
+import { validateBody } from "../middleware/validate.js";
+import { studioSchema, updateStudioSchema } from "../validators/index.js";
 
 const router = Router();
 
@@ -337,7 +339,7 @@ router.get("/:id", async (req: Request, res: Response) => {
 // Protected (requireAuth): Create new workspace listing
 // Enforces reading verified ownerName and ownerEmail from session (Req 9)
 // -----------------------------------------------------------------------------
-router.post("/", requireAuth, async (req: Request, res: Response) => {
+router.post("/", requireAuth, validateBody(studioSchema), async (req: Request, res: Response) => {
   try {
     const {
       title,
@@ -419,7 +421,7 @@ router.post("/", requireAuth, async (req: Request, res: Response) => {
 // PUT /api/studios/:id
 // Protected (requireAuth): Update studio listing with ownership verification (Req 9)
 // -----------------------------------------------------------------------------
-router.put("/:id", requireAuth, async (req: Request, res: Response) => {
+router.put("/:id", requireAuth, validateBody(updateStudioSchema), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const userEmail = req.user?.email?.toLowerCase().trim();
