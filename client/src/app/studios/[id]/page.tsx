@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { Studio } from "@/types";
 import { getStudioById, toggleWishlistApi, getWishlistIds } from "@/services/studioService";
+import { createBooking } from "@/services/bookingService";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
@@ -131,6 +132,7 @@ export default function StudioDetailPage() {
 
   const handleBookingSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!studio) return;
 
     if (!user) {
       toast.info("Please log in to book this creative workspace.");
@@ -151,14 +153,31 @@ export default function StudioDetailPage() {
     }
 
     setIsBooking(true);
-    // Smooth transition into Phase 7 booking submission
-    setTimeout(() => {
+    try {
+      const res = await createBooking({
+        studioId: studio._id,
+        studioTitle: studio.title,
+        hostEmail: studio.ownerEmail,
+        bookingDate,
+        startTime,
+        endTime,
+        hourlyRate: studio.hourlyRate,
+        totalPrice: total,
+      });
+
+      if (res.success) {
+        toast.success(
+          `Reservation confirmed for "${studio.title}" on ${bookingDate} (${hours} hrs)!`
+        );
+        router.push("/my-bookings");
+      } else {
+        toast.error(res.error || "Failed to reserve studio.");
+      }
+    } catch {
+      toast.error("Error creating reservation.");
+    } finally {
       setIsBooking(false);
-      toast.success(
-        `Reservation requested for "${studio?.title}" on ${bookingDate} (${hours} hrs)! Total: $${total}`
-      );
-      router.push("/my-bookings");
-    }, 800);
+    }
   };
 
   if (loading || !studio) {
