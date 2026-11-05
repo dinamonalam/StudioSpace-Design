@@ -6,6 +6,7 @@ import { connectDB } from "./config/db.js";
 import { seedDatabase } from "./utils/seed.js";
 import authRoutes from "./routes/auth.routes.js";
 import studioRoutes from "./routes/studio.routes.js";
+import wishlistRoutes from "./routes/wishlist.routes.js";
 
 dotenv.config();
 
@@ -45,6 +46,7 @@ app.get("/api/health", (_req: Request, res: Response) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/studios", studioRoutes);
 app.use("/api/my-studios", studioRoutes);
+app.use("/api/wishlists", wishlistRoutes);
 
 // Global Error Handler
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
