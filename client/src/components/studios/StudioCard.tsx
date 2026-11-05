@@ -8,6 +8,8 @@ import { Studio } from "@/types";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { toast } from "sonner";
+import { useAuth } from "@/context/AuthContext";
+import { toggleWishlistApi } from "@/services/studioService";
 
 interface StudioCardProps {
   studio: Studio;
@@ -15,17 +17,39 @@ interface StudioCardProps {
 }
 
 export function StudioCard({ studio, isWishlisted = false }: StudioCardProps) {
+  const { user } = useAuth();
   const [favorite, setFavorite] = useState(isWishlisted);
+  const [isToggling, setIsToggling] = useState(false);
 
-  const toggleFavorite = (e: React.MouseEvent) => {
+  const toggleFavorite = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
+    if (!user) {
+      toast.info("Please log in to save workspaces to your wishlist.");
+      return;
+    }
+
+    if (isToggling) return;
+    setIsToggling(true);
+
     const nextState = !favorite;
-    setFavorite(nextState);
-    if (nextState) {
-      toast.success(`Saved "${studio.title}" to your wishlist!`);
-    } else {
-      toast.info(`Removed "${studio.title}" from your wishlist.`);
+    setFavorite(nextState); // optimistic update
+
+    try {
+      const res = await toggleWishlistApi(studio._id);
+      if (res.success && res.isWishlisted !== undefined) {
+        setFavorite(res.isWishlisted);
+        toast.success(res.message || (res.isWishlisted ? "Saved to wishlist" : "Removed from wishlist"));
+      } else {
+        setFavorite(!nextState); // revert on error
+        toast.error("Failed to update wishlist.");
+      }
+    } catch {
+      setFavorite(!nextState);
+      toast.error("Failed to update wishlist.");
+    } finally {
+      setIsToggling(false);
     }
   };
 

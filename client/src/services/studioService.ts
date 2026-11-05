@@ -220,3 +220,50 @@ export async function deleteStudio(
   }
 }
 
+/**
+ * Fetch wishlisted studio IDs for current authenticated user
+ */
+export async function getWishlistIds(): Promise<string[]> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/wishlists`, {
+      method: "GET",
+      credentials: "include",
+      cache: "no-store",
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      if (data.success && Array.isArray(data.studioIds)) {
+        return data.studioIds;
+      }
+    }
+  } catch (err) {
+    console.warn("Failed to fetch wishlist IDs from API:", err);
+  }
+  return [];
+}
+
+/**
+ * Toggle wishlist state for a studio
+ */
+export async function toggleWishlistApi(
+  studioId: string
+): Promise<{ success: boolean; isWishlisted?: boolean; message?: string }> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/wishlists/${studioId}`, {
+      method: "POST",
+      credentials: "include",
+    });
+
+    const data = await res.json();
+    return {
+      success: res.ok && data.success,
+      isWishlisted: data.isWishlisted,
+      message: data.message || data.error,
+    };
+  } catch (err: unknown) {
+    const error = err as Error;
+    return { success: false, message: error.message };
+  }
+}
+

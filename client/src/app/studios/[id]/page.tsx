@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { FEATURED_STUDIOS } from "@/data/mockStudios";
+import { useParams, useRouter } from "next/navigation";
+import { Studio } from "@/types";
+import { getStudioById, toggleWishlistApi, getWishlistIds } from "@/services/studioService";
+import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import {
@@ -16,46 +18,159 @@ import {
   Calendar,
   Clock,
   ArrowLeft,
-  Mail,
   Share2,
   Heart,
+  Loader2,
+  DollarSign,
+  Sparkles,
+  Info,
 } from "lucide-react";
 import { toast } from "sonner";
 
 export default function StudioDetailPage() {
   const params = useParams();
+  const router = useRouter();
   const id = params?.id as string;
+  const { user } = useAuth();
 
-  const studio =
-    FEATURED_STUDIOS.find((s) => s._id === id) || FEATURED_STUDIOS[0];
+  const [studio, setStudio] = useState<Studio | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [isWishlisted, setIsWishlisted] = useState(false);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
-  const [bookingDate, setBookingDate] = useState("");
+  // Booking Calculator State
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const defaultDateStr = tomorrow.toISOString().split("T")[0];
+
+  const [bookingDate, setBookingDate] = useState(defaultDateStr);
   const [startTime, setStartTime] = useState("10:00");
   const [endTime, setEndTime] = useState("14:00");
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [isBooking, setIsBooking] = useState(false);
 
-  // Calculate hours and total
+  useEffect(() => {
+    async function loadStudio() {
+      if (!id) return;
+      try {
+        setLoading(true);
+        const [studioData, wishlists] = await Promise.all([
+          getStudioById(id),
+          user ? getWishlistIds() : Promise.resolve([]),
+        ]);
+
+        if (studioData) {
+          setStudio(studioData);
+          setIsWishlisted(wishlists.includes(studioData._id));
+        } else {
+          toast.error("Studio workspace not found.");
+          router.push("/studios");
+        }
+      } catch (err) {
+        console.error("Failed to load studio details:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadStudio();
+  }, [id, user, router]);
+
+  // Gallery images (cover image + curated complementary studio views)
+  const galleryImages = studio
+    ? [
+        studio.imageUrl,
+        "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?q=80&w=1200&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?q=80&w=1200&auto=format&fit=crop",
+      ]
+    : [];
+
+  // Calculate reservation hours and price breakdown
   const calculateTotal = () => {
+    if (!studio) return { hours: 4, subtotal: 380, total: 380 };
     const startHour = parseInt(startTime.split(":")[0], 10);
     const endHour = parseInt(endTime.split(":")[0], 10);
     const hours = Math.max(1, endHour - startHour);
     const subtotal = hours * studio.hourlyRate;
-    const total = subtotal + studio.securityDeposit;
+    const total = subtotal + (studio.securityDeposit || 0);
     return { hours, subtotal, total };
   };
 
   const { hours, subtotal, total } = calculateTotal();
 
-  const handleBooking = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!bookingDate) {
-      toast.error("Please select a valid booking date.");
+  const handleToggleWishlist = async () => {
+    if (!user) {
+      toast.info("Please log in to save workspaces to your wishlist.");
       return;
     }
-    toast.success(
-      `Reservation requested for ${studio.title} on ${bookingDate} (${hours} hrs)! Status: Pending`
-    );
+    if (!studio) return;
+
+    const nextState = !isWishlisted;
+    setIsWishlisted(nextState);
+
+    try {
+      const res = await toggleWishlistApi(studio._id);
+      if (res.success && res.isWishlisted !== undefined) {
+        setIsWishlisted(res.isWishlisted);
+        toast.success(res.message || (res.isWishlisted ? "Saved to wishlist" : "Removed from wishlist"));
+      } else {
+        setIsWishlisted(!nextState);
+        toast.error("Failed to update wishlist.");
+      }
+    } catch {
+      setIsWishlisted(!nextState);
+      toast.error("Failed to update wishlist.");
+    }
   };
+
+  const handleShare = () => {
+    if (typeof window !== "undefined") {
+      navigator.clipboard.writeText(window.location.href);
+      toast.success("Studio link copied to clipboard!");
+    }
+  };
+
+  const handleBookingSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!user) {
+      toast.info("Please log in to book this creative workspace.");
+      router.push(`/login?redirect=${encodeURIComponent(`/studios/${id}`)}`);
+      return;
+    }
+
+    if (!bookingDate) {
+      toast.error("Please select a reservation date.");
+      return;
+    }
+
+    const startHour = parseInt(startTime.split(":")[0], 10);
+    const endHour = parseInt(endTime.split(":")[0], 10);
+    if (endHour <= startHour) {
+      toast.error("End time must be after start time.");
+      return;
+    }
+
+    setIsBooking(true);
+    // Smooth transition into Phase 7 booking submission
+    setTimeout(() => {
+      setIsBooking(false);
+      toast.success(
+        `Reservation requested for "${studio?.title}" on ${bookingDate} (${hours} hrs)! Total: $${total}`
+      );
+      router.push("/my-bookings");
+    }, 800);
+  };
+
+  if (loading || !studio) {
+    return (
+      <div className="min-h-screen bg-[#17191C] flex flex-col items-center justify-center text-[#F5F0E8]">
+        <Loader2 className="w-8 h-8 text-[#E7A65A] animate-spin mb-3" />
+        <p className="text-xs text-[#858A90] uppercase tracking-widest font-semibold">
+          Loading Workspace Specifications...
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#17191C] text-[#F5F0E8] py-10">
@@ -88,200 +203,296 @@ export default function StudioDetailPage() {
               {studio.title}
             </h1>
             <div className="flex items-center gap-2 text-sm text-[#858A90] mt-2">
-              <MapPin className="w-4 h-4 text-[#E7A65A]" />
+              <MapPin className="w-4 h-4 text-[#E7A65A] shrink-0" />
               <span>{studio.location}</span>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
             <button
-              onClick={() => {
-                setIsFavorite(!isFavorite);
-                toast.success(
-                  isFavorite
-                    ? `Removed from wishlist.`
-                    : `Saved to wishlist!`
-                );
-              }}
-              className="p-2.5 rounded-xl border border-[#32363C] bg-[#24272B] text-[#F5F0E8] hover:text-red-400 hover:border-red-500/40 transition-colors"
-              aria-label="Wishlist studio"
+              onClick={handleToggleWishlist}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border text-xs font-semibold transition-all ${
+                isWishlisted
+                  ? "bg-rose-500/10 border-rose-500/40 text-rose-400"
+                  : "bg-[#24272B] border-[#32363C] text-[#F5F0E8] hover:border-white/20"
+              }`}
             >
               <Heart
-                className={`w-5 h-5 ${isFavorite ? "fill-red-500 text-red-500" : ""}`}
+                className={`w-4 h-4 ${
+                  isWishlisted ? "fill-rose-500 text-rose-500" : "text-[#858A90]"
+                }`}
               />
+              <span>{isWishlisted ? "Saved" : "Save to Wishlist"}</span>
             </button>
+
             <button
-              onClick={() => {
-                navigator.clipboard.writeText(window.location.href);
-                toast.success("Studio link copied to clipboard!");
-              }}
-              className="p-2.5 rounded-xl border border-[#32363C] bg-[#24272B] text-[#F5F0E8] hover:text-[#E7A65A] hover:border-[#E7A65A]/40 transition-colors"
-              aria-label="Share studio"
+              onClick={handleShare}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#24272B] border border-[#32363C] text-xs font-semibold text-[#F5F0E8] hover:border-white/20 transition-all"
             >
-              <Share2 className="w-5 h-5" />
+              <Share2 className="w-4 h-4 text-[#858A90]" />
+              <span>Share</span>
             </button>
           </div>
         </div>
 
-        {/* Studio Gallery Visual Hero */}
-        <div className="relative aspect-[21/9] sm:aspect-[16/7] w-full rounded-3xl overflow-hidden mb-12 border border-[#32363C] shadow-2xl" style={{ position: "relative" }}>
-          <Image
-            src={studio.imageUrl}
-            alt={studio.title}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-          <div className="absolute bottom-4 left-4 z-10 flex items-center gap-2 bg-black/60 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-white/10 text-xs">
-            <Users className="w-4 h-4 text-[#E7A65A]" />
-            <span>Max Capacity: Up to {studio.maxCapacity} creators & crew</span>
+        {/* Photography Gallery Section */}
+        <div className="mb-12 space-y-4">
+          <div className="relative aspect-[16/9] md:aspect-[21/9] w-full rounded-3xl overflow-hidden border border-[#32363C] bg-[#17191C] shadow-2xl">
+            <Image
+              src={galleryImages[activeImageIndex]}
+              alt={studio.title}
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover transition-opacity duration-300"
+              unoptimized
+            />
+            <div className="absolute top-4 left-4">
+              <span className="px-3 py-1 rounded-full bg-[#17191C]/80 backdrop-blur-md text-xs font-semibold text-[#E7A65A] border border-white/10">
+                Studio View {activeImageIndex + 1} of {galleryImages.length}
+              </span>
+            </div>
+          </div>
+
+          {/* Gallery Thumbnails */}
+          <div className="grid grid-cols-4 gap-3">
+            {galleryImages.map((img, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => setActiveImageIndex(idx)}
+                className={`relative aspect-[16/10] rounded-xl overflow-hidden border-2 transition-all ${
+                  activeImageIndex === idx
+                    ? "border-[#E7A65A] scale-[1.02] shadow-lg"
+                    : "border-transparent opacity-60 hover:opacity-100"
+                }`}
+              >
+                <Image
+                  src={img}
+                  alt={`Thumbnail ${idx + 1}`}
+                  fill
+                  sizes="25vw"
+                  className="object-cover"
+                  unoptimized
+                />
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* Content Layout: Left Specs vs Right Booking Card */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-          {/* Left Column: Details & Amenities */}
-          <div className="lg:col-span-7 space-y-10">
+        {/* 2-Column Content Grid: Specs on Left, Booking Card on Right */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
+          {/* Left Column: Specs, Amenities, Overview, Host Info */}
+          <div className="lg:col-span-2 space-y-10">
+            {/* Quick Metrics */}
+            <div className="grid grid-cols-3 gap-4 p-6 rounded-2xl bg-[#24272B] border border-[#32363C]">
+              <div>
+                <span className="text-xs uppercase text-[#858A90] font-semibold block mb-1">
+                  Hourly Rate
+                </span>
+                <span className="font-serif text-2xl font-bold text-[#E7A65A]">
+                  ${studio.hourlyRate}
+                  <span className="text-xs font-sans text-[#858A90]"> / hr</span>
+                </span>
+              </div>
+              <div>
+                <span className="text-xs uppercase text-[#858A90] font-semibold block mb-1">
+                  Max Capacity
+                </span>
+                <span className="font-serif text-2xl font-bold text-[#F5F0E8] flex items-center gap-1.5">
+                  <Users className="w-5 h-5 text-[#E7A65A]" />
+                  <span>{studio.maxCapacity}</span>
+                </span>
+              </div>
+              <div>
+                <span className="text-xs uppercase text-[#858A90] font-semibold block mb-1">
+                  Deposit
+                </span>
+                <span className="font-serif text-2xl font-bold text-[#F5F0E8]">
+                  ${studio.securityDeposit || 0}
+                </span>
+              </div>
+            </div>
+
             {/* Overview */}
-            <div className="p-8 rounded-3xl bg-[#24272B] border border-[#32363C]">
-              <h2 className="font-serif text-2xl font-bold text-[#F5F0E8] mb-4">
-                Workspace Overview
+            <div className="space-y-4">
+              <h2 className="font-serif text-2xl font-bold text-[#F5F0E8]">
+                About This Workspace
               </h2>
-              <p className="text-sm sm:text-base text-[#858A90] leading-relaxed">
+              <p className="text-sm leading-relaxed text-[#858A90] whitespace-pre-line">
                 {studio.description}
               </p>
             </div>
 
             {/* Amenities Grid */}
-            <div className="p-8 rounded-3xl bg-[#24272B] border border-[#32363C]">
-              <h2 className="font-serif text-2xl font-bold text-[#F5F0E8] mb-6">
-                Included Production Amenities
+            <div className="space-y-4">
+              <h2 className="font-serif text-2xl font-bold text-[#F5F0E8]">
+                Production Equipment & Amenities
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                {studio.amenities.map((amenity, idx) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {studio.amenities.map((amenity, index) => (
                   <div
-                    key={idx}
-                    className="flex items-center gap-3 p-3 rounded-xl bg-[#17191C]/60 border border-white/5"
+                    key={index}
+                    className="flex items-center gap-3 p-3.5 rounded-xl bg-[#24272B] border border-[#32363C] text-xs font-medium text-[#F5F0E8]"
                   >
                     <CheckCircle2 className="w-4 h-4 text-[#E7A65A] shrink-0" />
-                    <span className="text-xs text-[#F5F0E8] font-medium">{amenity}</span>
+                    <span>{amenity}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Host Details */}
-            <div className="p-8 rounded-3xl bg-[#24272B] border border-[#32363C] flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-2xl bg-[#E7A65A]/20 border border-[#E7A65A]/40 flex items-center justify-center font-bold text-lg text-[#E7A65A]">
-                  {studio.ownerName.slice(0, 2).toUpperCase()}
+            {/* Host Identity Card */}
+            <div className="p-6 rounded-2xl bg-[#24272B] border border-[#32363C] space-y-4">
+              <div className="flex items-center justify-between border-b border-[#32363C] pb-4">
+                <div className="flex items-center gap-3.5">
+                  <div className="w-12 h-12 rounded-full bg-[#17191C] border border-[#E7A65A]/40 flex items-center justify-center font-serif font-bold text-[#E7A65A] text-lg">
+                    {studio.ownerName.charAt(0)}
+                  </div>
+                  <div>
+                    <h3 className="font-serif text-lg font-bold text-[#F5F0E8]">
+                      Hosted by {studio.ownerName}
+                    </h3>
+                    <p className="text-xs text-[#858A90]">
+                      Verified StudioSpace Facility Partner
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <span className="text-[10px] uppercase font-bold text-[#858A90] tracking-wider block">
-                    Verified Host
-                  </span>
-                  <h3 className="font-serif text-lg font-bold text-[#F5F0E8]">
-                    {studio.ownerName}
-                  </h3>
-                  <p className="text-xs text-[#858A90]">{studio.ownerEmail}</p>
+
+                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-xs font-semibold text-emerald-400">
+                  <ShieldCheck className="w-4 h-4" />
+                  <span>Verified Host</span>
                 </div>
               </div>
-              <div className="hidden sm:flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-full border border-emerald-500/20">
-                <ShieldCheck className="w-4 h-4" />
-                <span>Identity Verified</span>
-              </div>
+
+              <p className="text-xs text-[#858A90] leading-relaxed">
+                Direct on-site support and gear checkout available during all booked production slots. Contact verified at {studio.ownerEmail}.
+              </p>
             </div>
           </div>
 
-          {/* Right Column: Sticky Booking Widget */}
-          <div className="lg:col-span-5">
-            <div className="sticky top-28 rounded-3xl bg-[#24272B] border border-[#32363C] p-6 sm:p-8 shadow-2xl space-y-6">
+          {/* Right Column: Sticky Booking Card & Price Calculator */}
+          <div className="lg:col-span-1 sticky top-24">
+            <div className="p-6 rounded-3xl bg-[#24272B] border border-[#32363C] shadow-2xl space-y-6">
               <div className="flex items-baseline justify-between border-b border-[#32363C] pb-4">
                 <div>
-                  <span className="text-3xl font-bold text-[#E7A65A]">
+                  <span className="font-serif text-3xl font-bold text-[#E7A65A]">
                     ${studio.hourlyRate}
                   </span>
-                  <span className="text-sm text-[#858A90]"> / hour</span>
+                  <span className="text-xs text-[#858A90] ml-1">/ hour</span>
                 </div>
-                <span className="text-xs text-[#858A90]">
-                  ${studio.securityDeposit} refundable deposit
-                </span>
+                <div className="flex items-center gap-1 text-xs text-[#F5F0E8] font-semibold">
+                  <Star className="w-3.5 h-3.5 fill-[#E7A65A] text-[#E7A65A]" />
+                  <span>{studio.rating.toFixed(2)}</span>
+                </div>
               </div>
 
-              <form onSubmit={handleBooking} className="space-y-4">
-                {/* Date Selection */}
+              <form onSubmit={handleBookingSubmit} className="space-y-4">
+                {/* Date Picker */}
                 <div>
-                  <label className="block text-xs font-semibold text-[#858A90] uppercase tracking-wider mb-2">
-                    Production Date
+                  <label className="block text-xs uppercase font-semibold text-[#858A90] tracking-wider mb-2">
+                    Booking Date
                   </label>
                   <div className="relative">
+                    <Calendar className="absolute left-3.5 top-3 w-4 h-4 text-[#858A90]" />
                     <input
                       type="date"
+                      required
                       value={bookingDate}
                       onChange={(e) => setBookingDate(e.target.value)}
-                      required
-                      className="w-full bg-[#17191C] border border-[#32363C] rounded-xl px-4 py-3 text-sm text-[#F5F0E8] focus:outline-none focus:border-[#E7A65A]/60 [color-scheme:dark] cursor-pointer"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#17191C] border border-[#32363C] text-xs text-[#F5F0E8] focus:outline-none focus:border-[#E7A65A] transition-colors cursor-pointer"
                     />
                   </div>
                 </div>
 
-                {/* Time Slots */}
+                {/* Time Slot Selectors */}
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-semibold text-[#858A90] uppercase tracking-wider mb-2">
+                    <label className="block text-xs uppercase font-semibold text-[#858A90] tracking-wider mb-2">
                       Start Time
                     </label>
-                    <input
-                      type="time"
-                      value={startTime}
-                      onChange={(e) => setStartTime(e.target.value)}
-                      className="w-full bg-[#17191C] border border-[#32363C] rounded-xl px-3 py-3 text-sm text-[#F5F0E8] focus:outline-none focus:border-[#E7A65A]/60 [color-scheme:dark] cursor-pointer"
-                    />
+                    <div className="relative">
+                      <Clock className="absolute left-3 top-3 w-3.5 h-3.5 text-[#858A90]" />
+                      <select
+                        value={startTime}
+                        onChange={(e) => setStartTime(e.target.value)}
+                        className="w-full pl-9 pr-2 py-2.5 rounded-xl bg-[#17191C] border border-[#32363C] text-xs text-[#F5F0E8] focus:outline-none focus:border-[#E7A65A] transition-colors cursor-pointer"
+                      >
+                        <option value="08:00">08:00 AM</option>
+                        <option value="10:00">10:00 AM</option>
+                        <option value="12:00">12:00 PM</option>
+                        <option value="14:00">02:00 PM</option>
+                        <option value="16:00">04:00 PM</option>
+                        <option value="18:00">06:00 PM</option>
+                      </select>
+                    </div>
                   </div>
+
                   <div>
-                    <label className="block text-xs font-semibold text-[#858A90] uppercase tracking-wider mb-2">
+                    <label className="block text-xs uppercase font-semibold text-[#858A90] tracking-wider mb-2">
                       End Time
                     </label>
-                    <input
-                      type="time"
-                      value={endTime}
-                      onChange={(e) => setEndTime(e.target.value)}
-                      className="w-full bg-[#17191C] border border-[#32363C] rounded-xl px-3 py-3 text-sm text-[#F5F0E8] focus:outline-none focus:border-[#E7A65A]/60 [color-scheme:dark] cursor-pointer"
-                    />
+                    <div className="relative">
+                      <Clock className="absolute left-3 top-3 w-3.5 h-3.5 text-[#858A90]" />
+                      <select
+                        value={endTime}
+                        onChange={(e) => setEndTime(e.target.value)}
+                        className="w-full pl-9 pr-2 py-2.5 rounded-xl bg-[#17191C] border border-[#32363C] text-xs text-[#F5F0E8] focus:outline-none focus:border-[#E7A65A] transition-colors cursor-pointer"
+                      >
+                        <option value="12:00">12:00 PM</option>
+                        <option value="14:00">02:00 PM</option>
+                        <option value="16:00">04:00 PM</option>
+                        <option value="18:00">06:00 PM</option>
+                        <option value="20:00">08:00 PM</option>
+                        <option value="22:00">10:00 PM</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
 
-                {/* Price Breakdown */}
-                <div className="pt-4 border-t border-[#32363C] space-y-2 text-xs">
+                {/* Price Calculation Breakdown */}
+                <div className="p-4 rounded-xl bg-[#17191C] border border-white/5 space-y-2.5 text-xs">
                   <div className="flex justify-between text-[#858A90]">
-                    <span>${studio.hourlyRate} × {hours} hours</span>
-                    <span>${subtotal}</span>
+                    <span>${studio.hourlyRate} x {hours} shoot hours</span>
+                    <span className="text-[#F5F0E8] font-medium">${subtotal}</span>
                   </div>
+
                   <div className="flex justify-between text-[#858A90]">
                     <span>Refundable Security Deposit</span>
-                    <span>${studio.securityDeposit}</span>
+                    <span className="text-[#F5F0E8] font-medium">${studio.securityDeposit || 0}</span>
                   </div>
-                  <div className="flex justify-between font-bold text-sm text-[#F5F0E8] pt-2 border-t border-[#32363C]">
-                    <span>Total Estimated Due</span>
+
+                  <div className="border-t border-[#32363C] pt-2 flex justify-between font-bold text-sm text-[#F5F0E8]">
+                    <span>Estimated Total</span>
                     <span className="text-[#E7A65A]">${total}</span>
                   </div>
                 </div>
 
+                {/* Action CTA */}
                 <Button
                   type="submit"
                   variant="primary"
                   size="lg"
-                  className="w-full font-bold shadow-xl"
+                  disabled={isBooking}
+                  className="w-full gap-2 font-semibold shadow-lg shadow-[#E7A65A]/20"
                 >
-                  Request Studio Reservation
+                  {isBooking ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <span>Checking Availability...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="w-4 h-4" />
+                      <span>Book Workspace Now</span>
+                    </>
+                  )}
                 </Button>
               </form>
 
-              <div className="flex items-center justify-center gap-2 text-xs text-[#858A90] pt-2">
-                <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span>Double-booking prevention active</span>
+              <div className="flex items-center gap-2 text-[11px] text-[#858A90] justify-center text-center">
+                <Info className="w-3.5 h-3.5 text-[#E7A65A] shrink-0" />
+                <span>You will not be billed until the host confirms availability</span>
               </div>
             </div>
           </div>
@@ -290,4 +501,3 @@ export default function StudioDetailPage() {
     </div>
   );
 }
-
