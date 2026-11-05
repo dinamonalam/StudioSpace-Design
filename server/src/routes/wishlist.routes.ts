@@ -116,3 +116,4 @@ router.post("/:studioId", requireAuth, async (req: Request, res: Response) => {
 });
 
 export default router;
+
