@@ -12,8 +12,8 @@
 
 ## 🌐 Live Application URLs
 
-- **Client Live Website (Vercel)**: [https://studiospace-marketplace.vercel.app](https://studiospace-marketplace.vercel.app) *(or your deployed Vercel URL)*
-- **Server API Live Backend (Render)**: [https://studiospace-server.onrender.com](https://studiospace-server.onrender.com) *(or your deployed Render URL)*
+- **Client Live Website**: `[Insert your live Vercel URL here]`
+- **Server API Live Backend**: `[Insert your live Render/Railway URL here]`
 
 ---
 
