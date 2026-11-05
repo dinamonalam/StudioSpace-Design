@@ -12,8 +12,8 @@
 
 ## 🌐 Live Application URLs
 
-- **Client Live Website**: `[Insert your live Vercel URL after deploying Step 2]`
-- **Server API Live Backend**: [https://studiospace-server-hzs8.onrender.com](https://studiospace-server-hzs8.onrender.com)
+- **Client Live Website (Vercel)**: [https://client-gray-iota-24.vercel.app](https://client-gray-iota-24.vercel.app)
+- **Server API Live Backend (Render)**: [https://studiospace-server-hzs8.onrender.com](https://studiospace-server-hzs8.onrender.com)
 
 ---
 
