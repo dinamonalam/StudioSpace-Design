@@ -146,7 +146,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         let sessionUser: UserSession;
 
         try {
-          const apiRes = await fetch("http://localhost:5000/api/auth/google", {
+          const API_BASE_URL =
+            process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+          const apiRes = await fetch(`${API_BASE_URL}/auth/google`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
