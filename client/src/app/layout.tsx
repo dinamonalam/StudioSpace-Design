@@ -20,9 +20,9 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "StudioSpace | Peer-to-Peer Creative Workspace & Production Studio Sharing Platform",
+  title: "StudioSpace | Creative Workspace Rental & Production Studio Marketplace",
   description:
-    "Discover, inspect dynamic availability, and reserve premier photo cyc walls, film stages, podcast lounges, and sound suites.",
+    "Discover, inspect dynamic availability, and reserve premier photo cyc walls, film sound stages, podcast lounges, and music suites.",
   keywords: [
     "creative workspace",
     "photo studio rental",
@@ -40,10 +40,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${playfair.variable}`}>
-      <body className="min-h-screen bg-[#17191C] text-[#F5F0E8] antialiased selection:bg-[#E7A65A]/30 selection:text-[#E7A65A] flex flex-col justify-between">
+      <body className="min-h-screen bg-[#F4F0E5] dark:bg-[#123C32] text-[#123C32] dark:text-[#F4F0E5] antialiased selection:bg-[#C5A66A]/30 selection:text-[#C5A66A] flex flex-col justify-between transition-colors duration-200">
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem={false}
           disableTransitionOnChange
         >
@@ -56,9 +56,9 @@ export default function RootLayout({
               richColors
               toastOptions={{
                 style: {
-                  background: "#24272B",
-                  color: "#F5F0E8",
-                  border: "1px solid #32363C",
+                  background: "#123C32",
+                  color: "#F4F0E5",
+                  border: "1px solid rgba(197, 166, 106, 0.3)",
                 },
               }}
             />

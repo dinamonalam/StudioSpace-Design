@@ -23,19 +23,19 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      "inline-flex items-center justify-center font-medium transition-all duration-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E7A65A]/40 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:active:scale-100 cursor-pointer";
+      "inline-flex items-center justify-center font-medium transition-all duration-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#C5A66A]/40 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:active:scale-100 cursor-pointer";
 
     const variantStyles = {
       primary:
-        "bg-[#E7A65A] text-[#17191C] hover:bg-[#D49547] font-semibold shadow-md shadow-[#E7A65A]/15 hover:shadow-lg hover:shadow-[#E7A65A]/25",
+        "bg-[#C5A66A] text-[#123C32] hover:bg-[#D5BA83] font-semibold shadow-md shadow-[#C5A66A]/20 hover:shadow-lg",
       secondary:
-        "bg-[#24272B] text-[#F5F0E8] hover:bg-[#2C3136] border border-[#32363C] hover:border-white/20",
+        "bg-[#123C32] text-[#F4F0E5] hover:bg-[#1E6652] dark:bg-[#1A4D41] dark:hover:bg-[#1E6652] border border-[#123C32]/20 dark:border-white/10",
       outline:
-        "bg-transparent text-[#F5F0E8] border border-[#E7A65A]/60 hover:bg-[#E7A65A]/10 hover:border-[#E7A65A] text-[#E7A65A]",
+        "bg-transparent text-[#123C32] dark:text-[#C5A66A] border border-[#C5A66A] hover:bg-[#C5A66A]/10",
       ghost:
-        "bg-transparent text-[#858A90] hover:text-[#F5F0E8] hover:bg-white/5",
+        "bg-transparent text-[#123C32]/75 dark:text-[#F4F0E5]/75 hover:text-[#123C32] dark:hover:text-white hover:bg-[#123C32]/5 dark:hover:bg-white/10",
       danger:
-        "bg-red-500/10 text-red-400 border border-red-500/30 hover:bg-red-500/20 hover:border-red-500/50",
+        "bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/30 hover:bg-red-500/20",
     };
 
     const sizeStyles = {
@@ -59,4 +59,3 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 
 Button.displayName = "Button";
-

@@ -48,6 +48,7 @@ export interface UserSession {
   name: string;
   email: string;
   image?: string;
+  role?: string;
 }
 
 export interface ApiResponse<T = unknown> {

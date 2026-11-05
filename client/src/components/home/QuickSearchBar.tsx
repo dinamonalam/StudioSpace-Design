@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Search, MapPin, Calendar, Layers, ArrowRight } from "lucide-react";
+import { Search, MapPin, Calendar, Film } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 const CATEGORIES = [
@@ -23,96 +23,90 @@ export function QuickSearchBar() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     const params = new URLSearchParams();
+
     if (category && category !== "All Categories") {
       params.set("category", category);
     }
     if (location.trim()) {
-      params.set("location", location.trim());
+      params.set("search", location.trim());
     }
-    if (date) {
-      params.set("date", date);
-    }
+
     router.push(`/studios?${params.toString()}`);
   };
 
   return (
-    <div className="relative -mt-10 md:-mt-14 z-30 max-w-6xl mx-auto px-4 sm:px-6">
+    <div className="relative z-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 sm:-mt-14">
       <form
         onSubmit={handleSearch}
-        className="bg-[#24272B] border border-[#32363C] rounded-2xl p-4 md:p-5 shadow-2xl shadow-black/40 backdrop-blur-xl grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 items-center"
+        className="p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-white dark:bg-[#1A4D41] border border-[#123C32]/15 dark:border-white/10 shadow-2xl backdrop-blur-xl transition-all"
       >
-        {/* Category Selector */}
-        <div className="md:col-span-4 flex items-center gap-3 px-3 py-2.5 rounded-xl bg-[#17191C]/60 border border-white/5 focus-within:border-[#E7A65A]/50 transition-colors">
-          <Layers className="w-5 h-5 text-[#E7A65A] shrink-0" />
-          <div className="flex-1">
-            <label className="block text-[10px] uppercase font-semibold text-[#858A90] tracking-wider">
-              Studio Type
-            </label>
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              aria-label="Studio Type"
-              className="w-full bg-transparent text-sm text-[#F5F0E8] font-medium focus:outline-none cursor-pointer"
-            >
-              {CATEGORIES.map((cat) => (
-                <option key={cat} value={cat} className="bg-[#24272B] text-[#F5F0E8]">
-                  {cat}
-                </option>
-              ))}
-            </select>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-center">
+          {/* 1. Category Selector */}
+          <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#F4F0E5] dark:bg-[#123C32] border border-[#123C32]/10 dark:border-white/10">
+            <Film className="w-4 h-4 text-[#C5A66A] shrink-0" />
+            <div className="flex-1 min-w-0">
+              <span className="block text-[10px] uppercase font-bold tracking-wider text-[#123C32]/60 dark:text-[#F4F0E5]/60">
+                Space Type
+              </span>
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="w-full bg-transparent text-xs font-semibold text-[#123C32] dark:text-[#F4F0E5] focus:outline-none cursor-pointer truncate"
+              >
+                {CATEGORIES.map((cat) => (
+                  <option key={cat} value={cat} className="bg-white dark:bg-[#123C32] text-[#123C32] dark:text-[#F4F0E5]">
+                    {cat}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-        </div>
 
-        {/* Location Input */}
-        <div className="md:col-span-3 flex items-center gap-3 px-3 py-2.5 rounded-xl bg-[#17191C]/60 border border-white/5 focus-within:border-[#E7A65A]/50 transition-colors">
-          <MapPin className="w-5 h-5 text-[#E7A65A] shrink-0" />
-          <div className="flex-1">
-            <label htmlFor="search-city" className="block text-[10px] uppercase font-semibold text-[#858A90] tracking-wider">
-              Location / City
-            </label>
-            <input
-              id="search-city"
-              type="text"
-              placeholder="e.g. New York, LA, SoHo..."
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              className="w-full bg-transparent text-sm text-[#F5F0E8] placeholder:text-[#858A90]/60 focus:outline-none"
-            />
+          {/* 2. Location Input */}
+          <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#F4F0E5] dark:bg-[#123C32] border border-[#123C32]/10 dark:border-white/10">
+            <MapPin className="w-4 h-4 text-[#C5A66A] shrink-0" />
+            <div className="flex-1 min-w-0">
+              <span className="block text-[10px] uppercase font-bold tracking-wider text-[#123C32]/60 dark:text-[#F4F0E5]/60">
+                City / District
+              </span>
+              <input
+                type="text"
+                placeholder="e.g. SoHo, Los Angeles, Chicago"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                className="w-full bg-transparent text-xs font-semibold text-[#123C32] dark:text-[#F4F0E5] placeholder:text-[#123C32]/40 dark:placeholder:text-[#F4F0E5]/40 focus:outline-none truncate"
+              />
+            </div>
           </div>
-        </div>
 
-        {/* Date Selector */}
-        <div className="md:col-span-3 flex items-center gap-3 px-3 py-2.5 rounded-xl bg-[#17191C]/60 border border-white/5 focus-within:border-[#E7A65A]/50 transition-colors">
-          <Calendar className="w-5 h-5 text-[#E7A65A] shrink-0" />
-          <div className="flex-1">
-            <label htmlFor="search-date" className="block text-[10px] uppercase font-semibold text-[#858A90] tracking-wider">
-              Booking Date
-            </label>
-            <input
-              id="search-date"
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              className="w-full bg-transparent text-sm text-[#F5F0E8] focus:outline-none [color-scheme:dark] cursor-pointer"
-            />
+          {/* 3. Shoot Date Picker */}
+          <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#F4F0E5] dark:bg-[#123C32] border border-[#123C32]/10 dark:border-white/10">
+            <Calendar className="w-4 h-4 text-[#C5A66A] shrink-0" />
+            <div className="flex-1 min-w-0">
+              <span className="block text-[10px] uppercase font-bold tracking-wider text-[#123C32]/60 dark:text-[#F4F0E5]/60">
+                Shoot Date
+              </span>
+              <input
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                className="w-full bg-transparent text-xs font-semibold text-[#123C32] dark:text-[#F4F0E5] focus:outline-none cursor-pointer"
+              />
+            </div>
           </div>
-        </div>
 
-        {/* Search Submit CTA */}
-        <div className="md:col-span-2">
+          {/* 4. Action Button */}
           <Button
             type="submit"
             variant="primary"
             size="md"
-            className="w-full h-[52px] font-semibold text-sm flex items-center justify-center gap-2 group"
+            className="w-full h-full min-h-[50px] font-semibold gap-2 shadow-md shadow-[#C5A66A]/20"
           >
             <Search className="w-4 h-4" />
-            <span>Search</span>
-            <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+            <span>Search Studios</span>
           </Button>
         </div>
       </form>
     </div>
   );
 }
-

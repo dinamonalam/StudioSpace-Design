@@ -12,12 +12,12 @@ export function Badge({
   ...props
 }: BadgeProps) {
   const variantStyles = {
-    primary: "bg-[#E7A65A]/15 text-[#E7A65A] border border-[#E7A65A]/30",
-    secondary: "bg-[#24272B] text-[#858A90] border border-[#32363C]",
-    outline: "border border-white/15 text-[#F5F0E8] bg-transparent",
-    success: "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30",
-    warning: "bg-amber-500/15 text-amber-400 border border-amber-500/30",
-    danger: "bg-rose-500/15 text-rose-400 border border-rose-500/30",
+    primary: "bg-[#C5A66A]/20 text-[#123C32] dark:text-[#C5A66A] border border-[#C5A66A]/40 font-semibold",
+    secondary: "bg-[#123C32]/10 dark:bg-[#1A4D41] text-[#123C32] dark:text-[#F4F0E5] border border-[#123C32]/15 dark:border-white/10",
+    outline: "border border-[#123C32]/25 dark:border-white/20 text-[#123C32] dark:text-[#F4F0E5] bg-transparent",
+    success: "bg-emerald-600/15 text-emerald-800 dark:text-emerald-400 border border-emerald-600/30",
+    warning: "bg-amber-500/15 text-amber-800 dark:text-amber-400 border border-amber-500/30",
+    danger: "bg-rose-500/15 text-rose-800 dark:text-rose-400 border border-rose-500/30",
   };
 
   return (
@@ -33,4 +33,3 @@ export function Badge({
     </span>
   );
 }
-

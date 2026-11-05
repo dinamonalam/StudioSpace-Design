@@ -34,19 +34,16 @@ const STEPS = [
 
 export function WorkflowSection() {
   return (
-    <section className="py-24 bg-[#17191C] border-t border-[#32363C] relative overflow-hidden">
-      {/* Decorative ambient spotlight glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#E7A65A]/5 blur-[120px] rounded-full pointer-events-none" />
-
+    <section className="py-24 sm:py-28 bg-[#F4F0E5] dark:bg-[#123C32] border-t border-[#123C32]/10 dark:border-white/10 relative overflow-hidden transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-xs uppercase font-semibold text-[#E7A65A] tracking-widest block mb-2">
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <span className="text-xs uppercase font-semibold text-[#C5A66A] tracking-widest block mb-2">
             Seamless Reservation Workflow
           </span>
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F5F0E8] leading-tight mb-4">
+          <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#123C32] dark:text-[#F4F0E5] leading-tight mb-3">
             How StudioSpace Powers Your Next Shoot
           </h2>
-          <p className="text-base text-[#858A90] leading-relaxed">
+          <p className="text-xs sm:text-sm text-[#123C32]/70 dark:text-[#F4F0E5]/70 leading-relaxed">
             From discovering sunlit architectural cyc walls to rolling sound on an acoustically treated stage, book your workspace in four frictionless steps.
           </p>
         </div>
@@ -57,30 +54,29 @@ export function WorkflowSection() {
             return (
               <div
                 key={step.step}
-                className="relative p-6 rounded-2xl bg-[#24272B] border border-[#32363C] hover:border-[#E7A65A]/40 transition-all duration-300 flex flex-col justify-between group shadow-lg"
+                className="relative p-6 rounded-2xl bg-white dark:bg-[#1A4D41] border border-[#123C32]/12 dark:border-white/10 hover:border-[#C5A66A] transition-all duration-300 flex flex-col justify-between group shadow-sm hover:shadow-xl"
               >
                 <div>
                   <div className="flex items-center justify-between mb-6">
-                    <span className="font-serif text-2xl font-bold text-[#E7A65A]/50 group-hover:text-[#E7A65A] transition-colors">
+                    <span className="font-serif text-2xl font-bold text-[#C5A66A]">
                       {step.step}
                     </span>
-                    <div className="w-10 h-10 rounded-xl bg-[#17191C] border border-white/5 flex items-center justify-center text-[#E7A65A] group-hover:scale-110 transition-transform">
+                    <div className="w-10 h-10 rounded-xl bg-[#F4F0E5] dark:bg-[#123C32] border border-[#123C32]/10 dark:border-white/10 flex items-center justify-center text-[#C5A66A] group-hover:scale-110 transition-transform">
                       <Icon className="w-5 h-5" />
                     </div>
                   </div>
 
-                  <h3 className="font-serif text-lg font-bold text-[#F5F0E8] mb-2.5 group-hover:text-[#E7A65A] transition-colors">
+                  <h3 className="font-serif text-base sm:text-lg font-bold text-[#123C32] dark:text-[#F4F0E5] mb-2 group-hover:text-[#C5A66A] transition-colors">
                     {step.title}
                   </h3>
 
-                  <p className="text-xs text-[#858A90] leading-relaxed">
+                  <p className="text-xs text-[#123C32]/70 dark:text-[#F4F0E5]/70 leading-relaxed">
                     {step.description}
                   </p>
                 </div>
 
-                {/* Subtitle indicator arrow for non-last items */}
                 {idx < STEPS.length - 1 && (
-                  <div className="hidden lg:block absolute -right-3 top-1/2 -translate-y-1/2 z-20 w-6 h-6 rounded-full bg-[#17191C] border border-[#32363C] text-[#858A90] text-center leading-6 text-xs font-bold">
+                  <div className="hidden lg:block absolute -right-3 top-1/2 -translate-y-1/2 z-20 w-6 h-6 rounded-full bg-white dark:bg-[#123C32] border border-[#123C32]/15 dark:border-white/15 text-[#123C32] dark:text-[#F4F0E5] text-center leading-6 text-xs font-bold shadow-sm">
                     →
                   </div>
                 )}
@@ -92,4 +88,3 @@ export function WorkflowSection() {
     </section>
   );
 }
-

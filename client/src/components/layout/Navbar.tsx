@@ -62,7 +62,7 @@ export function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-[#32363C]/80 bg-[#17191C]/90 backdrop-blur-xl transition-colors">
+    <header className="sticky top-0 z-50 w-full border-b border-[#123C32]/10 dark:border-white/10 bg-[#F4F0E5]/90 dark:bg-[#123C32]/90 backdrop-blur-xl transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         {/* Brand Logo */}
         <div className="flex items-center gap-8">
@@ -83,13 +83,13 @@ export function Navbar() {
                   className={cn(
                     "relative px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg",
                     isActive
-                      ? "text-[#E7A65A] bg-[#24272B]/70"
-                      : "text-[#858A90] hover:text-[#F5F0E8] hover:bg-white/5"
+                      ? "text-[#123C32] dark:text-[#C5A66A] font-semibold bg-[#123C32]/8 dark:bg-white/10"
+                      : "text-[#123C32]/75 dark:text-[#F4F0E5]/75 hover:text-[#C5A66A] hover:bg-[#123C32]/5 dark:hover:bg-white/5"
                   )}
                 >
                   {link.label}
                   {isActive && (
-                    <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-[#E7A65A] rounded-full" />
+                    <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-[#C5A66A] rounded-full" />
                   )}
                 </Link>
               );
@@ -98,101 +98,104 @@ export function Navbar() {
         </div>
 
         {/* Right Action Area */}
-        <div className="hidden lg:flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-4">
           <ThemeToggle />
 
           {user ? (
-            /* Authenticated State */
+            /* Authenticated User Menu */
             <div className="relative" ref={dropdownRef}>
               <button
+                type="button"
                 onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                className="flex items-center gap-3 p-1.5 pr-3 rounded-full border border-[#32363C] bg-[#24272B] hover:border-[#E7A65A]/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#E7A65A]/40"
+                className="flex items-center gap-3 p-1.5 pr-3 rounded-full border border-[#123C32]/15 dark:border-white/15 bg-white/70 dark:bg-[#1A4D41] hover:border-[#C5A66A] transition-all cursor-pointer shadow-sm"
                 aria-expanded={userDropdownOpen}
                 aria-haspopup="true"
               >
                 <div
-                  className="relative w-8 h-8 rounded-full overflow-hidden bg-[#E7A65A]/20 border border-[#E7A65A]/30 flex items-center justify-center text-xs font-bold text-[#E7A65A]"
+                  className="relative w-8 h-8 rounded-full overflow-hidden bg-[#C5A66A]/20 text-[#123C32] flex items-center justify-center font-serif font-bold text-sm"
                   style={{ position: "relative" }}
                 >
                   {user.image ? (
-                    <Image
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
                       src={user.image}
-                      alt={user.name}
-                      fill
-                      unoptimized
-                      sizes="32px"
-                      className="object-cover"
+                      alt={user.name || "User Avatar"}
+                      className="w-full h-full object-cover rounded-full"
                     />
                   ) : (
-                    <span>{user.name.slice(0, 2).toUpperCase()}</span>
+                    <span>{(user.name || "U").charAt(0).toUpperCase()}</span>
                   )}
                 </div>
                 <div className="text-left">
-                  <span className="block text-xs font-semibold text-[#F5F0E8] leading-tight truncate max-w-[110px]">
+                  <span className="block text-xs font-semibold text-[#123C32] dark:text-[#F4F0E5] leading-tight line-clamp-1 max-w-[120px]">
                     {user.name}
-                  </span>
-                  <span className="block text-[10px] text-[#858A90] leading-none">
-                    Creator / Host
                   </span>
                 </div>
                 <ChevronDown
                   className={cn(
-                    "w-3.5 h-3.5 text-[#858A90] transition-transform duration-200",
-                    userDropdownOpen && "rotate-180 text-[#E7A65A]"
+                    "w-4 h-4 text-[#123C32]/60 dark:text-[#F4F0E5]/60 transition-transform duration-200",
+                    userDropdownOpen && "rotate-180"
                   )}
                 />
               </button>
 
-              {/* User Dropdown Menu */}
+              {/* Dropdown Menu */}
               {userDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-64 rounded-2xl bg-[#24272B] border border-[#32363C] shadow-2xl shadow-black/60 p-2 z-50 animate-in fade-in-50 zoom-in-95 duration-150">
-                  <div className="px-3 py-2.5 border-b border-[#32363C]/80 mb-1">
-                    <p className="text-xs font-semibold text-[#F5F0E8]">{user.name}</p>
-                    <p className="text-[11px] text-[#858A90] truncate">{user.email}</p>
+                <div
+                  className="absolute right-0 mt-2 w-56 rounded-2xl bg-white dark:bg-[#1A4D41] border border-[#123C32]/15 dark:border-white/10 p-2 shadow-2xl z-50 animate-fade-in"
+                  role="menu"
+                >
+                  <div className="px-3 py-2 border-b border-[#123C32]/10 dark:border-white/10 mb-1">
+                    <p className="text-xs font-bold text-[#123C32] dark:text-[#F4F0E5] line-clamp-1">
+                      {user.name}
+                    </p>
+                    <p className="text-[11px] text-[#123C32]/60 dark:text-[#F4F0E5]/60 line-clamp-1">
+                      {user.email}
+                    </p>
                   </div>
 
                   <div className="space-y-0.5">
                     <Link
                       href="/dashboard"
-                      className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-[#F5F0E8] hover:bg-white/5 hover:text-[#E7A65A] rounded-xl transition-colors"
+                      className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-[#123C32] dark:text-[#F4F0E5] hover:bg-[#123C32]/5 dark:hover:bg-white/10 hover:text-[#C5A66A] rounded-xl transition-colors"
                       onClick={() => setUserDropdownOpen(false)}
                     >
-                      <LayoutDashboard className="w-4 h-4 text-[#858A90]" />
+                      <LayoutDashboard className="w-4 h-4 text-[#C5A66A]" />
                       <span>Dashboard</span>
                     </Link>
 
                     <Link
                       href="/add-studio"
-                      className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-[#F5F0E8] hover:bg-white/5 hover:text-[#E7A65A] rounded-xl transition-colors"
+                      className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-[#123C32] dark:text-[#F4F0E5] hover:bg-[#123C32]/5 dark:hover:bg-white/10 hover:text-[#C5A66A] rounded-xl transition-colors"
                       onClick={() => setUserDropdownOpen(false)}
                     >
-                      <PlusCircle className="w-4 h-4 text-[#E7A65A]" />
+                      <PlusCircle className="w-4 h-4 text-[#C5A66A]" />
                       <span>Add New Studio</span>
                     </Link>
 
                     <Link
                       href="/my-listings"
-                      className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-[#F5F0E8] hover:bg-white/5 hover:text-[#E7A65A] rounded-xl transition-colors"
+                      className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-[#123C32] dark:text-[#F4F0E5] hover:bg-[#123C32]/5 dark:hover:bg-white/10 hover:text-[#C5A66A] rounded-xl transition-colors"
                       onClick={() => setUserDropdownOpen(false)}
                     >
-                      <Building2 className="w-4 h-4 text-[#858A90]" />
+                      <Building2 className="w-4 h-4 text-[#C5A66A]" />
                       <span>My Studio Listings</span>
                     </Link>
 
                     <Link
                       href="/my-bookings"
-                      className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-[#F5F0E8] hover:bg-white/5 hover:text-[#E7A65A] rounded-xl transition-colors"
+                      className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-[#123C32] dark:text-[#F4F0E5] hover:bg-[#123C32]/5 dark:hover:bg-white/10 hover:text-[#C5A66A] rounded-xl transition-colors"
                       onClick={() => setUserDropdownOpen(false)}
                     >
-                      <Calendar className="w-4 h-4 text-[#858A90]" />
+                      <Calendar className="w-4 h-4 text-[#C5A66A]" />
                       <span>My Bookings</span>
                     </Link>
                   </div>
 
-                  <div className="border-t border-[#32363C]/80 mt-1 pt-1">
+                  <div className="border-t border-[#123C32]/10 dark:border-white/10 mt-1 pt-1">
                     <button
                       onClick={handleLogout}
-                      className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-rose-400 hover:bg-rose-500/10 rounded-xl transition-colors"
+                      className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 rounded-xl transition-colors"
                     >
                       <LogOut className="w-4 h-4" />
                       <span>Log Out</span>
@@ -225,21 +228,19 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2.5 rounded-xl border border-[#32363C] bg-[#24272B] text-[#F5F0E8] hover:text-[#E7A65A] focus:outline-none"
+            className="p-2.5 rounded-xl border border-[#123C32]/15 dark:border-white/15 bg-white/70 dark:bg-[#1A4D41] text-[#123C32] dark:text-[#F4F0E5] hover:text-[#C5A66A] focus:outline-none"
             aria-label="Toggle navigation menu"
             aria-expanded={mobileMenuOpen}
-            aria-controls="mobile-navigation"
-          ></button>
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
+      {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div
-          id="mobile-navigation"
-          className="lg:hidden border-t border-[#32363C] bg-[#17191C]/98 backdrop-blur-2xl px-6 py-6 space-y-4 animate-in slide-in-from-top-4 duration-200"
-        >
-          <nav className="flex flex-col space-y-2">
+        <div className="lg:hidden border-t border-[#123C32]/10 dark:border-white/10 bg-[#F4F0E5] dark:bg-[#123C32] px-4 pt-3 pb-6 space-y-3">
+          <nav className="space-y-1">
             {NAV_LINKS.map((link) => {
               const isActive =
                 link.href === "/"
@@ -251,10 +252,10 @@ export function Navbar() {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "px-4 py-2.5 text-base font-medium rounded-xl transition-colors",
+                    "block px-4 py-2.5 rounded-xl text-sm font-medium transition-colors",
                     isActive
-                      ? "text-[#E7A65A] bg-[#24272B]"
-                      : "text-[#858A90] hover:text-[#F5F0E8] hover:bg-white/5"
+                      ? "bg-[#C5A66A]/15 text-[#123C32] dark:text-[#C5A66A] font-bold"
+                      : "text-[#123C32]/80 dark:text-[#F4F0E5]/80 hover:bg-[#123C32]/5 dark:hover:bg-white/5"
                   )}
                 >
                   {link.label}
@@ -263,81 +264,57 @@ export function Navbar() {
             })}
           </nav>
 
-          <div className="pt-4 border-t border-[#32363C] space-y-3">
+          <div className="pt-3 border-t border-[#123C32]/10 dark:border-white/10">
             {user ? (
               <div className="space-y-2">
-                <div className="px-4 py-2 bg-[#24272B] rounded-xl flex items-center gap-3">
-                  <div className="relative w-9 h-9 rounded-full overflow-hidden bg-[#E7A65A]/20 border border-[#E7A65A]/30 flex items-center justify-center font-bold text-xs text-[#E7A65A]" style={{ position: "relative" }}>
-                    {user.image ? (
-                      <Image
-                        src={user.image}
-                        alt={user.name}
-                        fill
-                        unoptimized
-                        sizes="36px"
-                        className="object-cover"
-                      />
-                    ) : (
-                      <span>{user.name.slice(0, 2).toUpperCase()}</span>
-                    )}
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-[#F5F0E8]">{user.name}</p>
-                    <p className="text-xs text-[#858A90]">{user.email}</p>
-                  </div>
+                <div className="px-3 py-2 rounded-xl bg-white/60 dark:bg-[#1A4D41]">
+                  <p className="text-xs font-bold text-[#123C32] dark:text-[#F4F0E5]">
+                    {user.name}
+                  </p>
+                  <p className="text-[11px] text-[#123C32]/60 dark:text-[#F4F0E5]/60">
+                    {user.email}
+                  </p>
                 </div>
-
                 <Link
                   href="/dashboard"
-                  className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-[#F5F0E8] hover:bg-white/5 rounded-xl"
+                  className="block px-3 py-2 text-xs font-medium text-[#123C32] dark:text-[#F4F0E5] hover:text-[#C5A66A]"
                 >
-                  <LayoutDashboard className="w-4 h-4 text-[#858A90]" />
-                  <span>Dashboard</span>
+                  Dashboard
                 </Link>
-
                 <Link
                   href="/add-studio"
-                  className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-[#E7A65A] hover:bg-white/5 rounded-xl"
+                  className="block px-3 py-2 text-xs font-medium text-[#123C32] dark:text-[#F4F0E5] hover:text-[#C5A66A]"
                 >
-                  <PlusCircle className="w-4 h-4" />
-                  <span>Add New Studio</span>
+                  Add New Studio
                 </Link>
-
                 <Link
                   href="/my-listings"
-                  className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-[#F5F0E8] hover:bg-white/5 rounded-xl"
+                  className="block px-3 py-2 text-xs font-medium text-[#123C32] dark:text-[#F4F0E5] hover:text-[#C5A66A]"
                 >
-                  <Building2 className="w-4 h-4 text-[#858A90]" />
-                  <span>My Studio Listings</span>
+                  My Listings
                 </Link>
-
                 <Link
                   href="/my-bookings"
-                  className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-[#F5F0E8] hover:bg-white/5 rounded-xl"
+                  className="block px-3 py-2 text-xs font-medium text-[#123C32] dark:text-[#F4F0E5] hover:text-[#C5A66A]"
                 >
-                  <Calendar className="w-4 h-4 text-[#858A90]" />
-                  <span>My Bookings</span>
+                  My Bookings
                 </Link>
-
-                <Button
-                  variant="danger"
-                  size="md"
-                  className="w-full justify-center gap-2 mt-2"
+                <button
                   onClick={handleLogout}
+                  className="w-full text-left px-3 py-2 text-xs font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 rounded-xl"
                 >
-                  <LogOut className="w-4 h-4" />
-                  <span>Log Out</span>
-                </Button>
+                  Log Out
+                </button>
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-3">
-                <Link href="/login" className="w-full">
-                  <Button variant="secondary" size="md" className="w-full">
+              <div className="grid grid-cols-2 gap-2 pt-2">
+                <Link href="/login">
+                  <Button variant="ghost" size="sm" className="w-full justify-center">
                     Log In
                   </Button>
                 </Link>
-                <Link href="/register" className="w-full">
-                  <Button variant="primary" size="md" className="w-full">
+                <Link href="/register">
+                  <Button variant="primary" size="sm" className="w-full justify-center">
                     Register
                   </Button>
                 </Link>
@@ -349,4 +326,3 @@ export function Navbar() {
     </header>
   );
 }
-

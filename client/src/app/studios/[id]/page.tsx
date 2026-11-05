@@ -182,9 +182,9 @@ export default function StudioDetailPage() {
 
   if (loading || !studio) {
     return (
-      <div className="min-h-screen bg-[#17191C] flex flex-col items-center justify-center text-[#F5F0E8]">
-        <Loader2 className="w-8 h-8 text-[#E7A65A] animate-spin mb-3" />
-        <p className="text-xs text-[#858A90] uppercase tracking-widest font-semibold">
+      <div className="min-h-screen bg-[#F4F0E5] dark:bg-[#123C32] flex flex-col items-center justify-center text-[#123C32] dark:text-[#F4F0E5]">
+        <Loader2 className="w-8 h-8 text-[#C5A66A] animate-spin mb-3" />
+        <p className="text-xs text-[#123C32]/70 dark:text-[#F4F0E5]/70 uppercase tracking-widest font-semibold">
           Loading Workspace Specifications...
         </p>
       </div>
@@ -192,13 +192,13 @@ export default function StudioDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#17191C] text-[#F5F0E8] py-10">
+    <div className="min-h-screen bg-[#F4F0E5] dark:bg-[#123C32] text-[#123C32] dark:text-[#F4F0E5] py-12 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Back navigation */}
         <div className="mb-6">
           <Link
             href="/studios"
-            className="inline-flex items-center gap-2 text-xs font-medium text-[#858A90] hover:text-[#E7A65A] transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-semibold text-[#123C32]/70 dark:text-[#F4F0E5]/70 hover:text-[#C5A66A] transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to All Studios</span>
@@ -212,17 +212,17 @@ export default function StudioDetailPage() {
               <Badge variant="primary" className="text-xs px-3 py-1 font-semibold">
                 {studio.category}
               </Badge>
-              <div className="flex items-center gap-1 text-xs font-semibold text-[#F5F0E8]">
-                <Star className="w-3.5 h-3.5 fill-[#E7A65A] text-[#E7A65A]" />
+              <div className="flex items-center gap-1 text-xs font-semibold text-[#123C32] dark:text-[#F4F0E5]">
+                <Star className="w-3.5 h-3.5 fill-[#C5A66A] text-[#C5A66A]" />
                 <span>{studio.rating.toFixed(2)}</span>
-                <span className="text-[#858A90]">({studio.reviewsCount || 24} reviews)</span>
+                <span className="text-[#123C32]/60 dark:text-[#F4F0E5]/60">({studio.reviewsCount || 24} reviews)</span>
               </div>
             </div>
-            <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F5F0E8]">
+            <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#123C32] dark:text-[#F4F0E5]">
               {studio.title}
             </h1>
-            <div className="flex items-center gap-2 text-sm text-[#858A90] mt-2">
-              <MapPin className="w-4 h-4 text-[#E7A65A] shrink-0" />
+            <div className="flex items-center gap-2 text-sm text-[#123C32]/70 dark:text-[#F4F0E5]/70 mt-2">
+              <MapPin className="w-4 h-4 text-[#C5A66A] shrink-0" />
               <span>{studio.location}</span>
             </div>
           </div>
@@ -232,13 +232,13 @@ export default function StudioDetailPage() {
               onClick={handleToggleWishlist}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border text-xs font-semibold transition-all ${
                 isWishlisted
-                  ? "bg-rose-500/10 border-rose-500/40 text-rose-400"
-                  : "bg-[#24272B] border-[#32363C] text-[#F5F0E8] hover:border-white/20"
+                  ? "bg-rose-500/10 border-rose-500/40 text-rose-500"
+                  : "bg-white dark:bg-[#1A4D41] border-[#123C32]/15 dark:border-white/15 text-[#123C32] dark:text-[#F4F0E5] hover:border-[#C5A66A]"
               }`}
             >
               <Heart
                 className={`w-4 h-4 ${
-                  isWishlisted ? "fill-rose-500 text-rose-500" : "text-[#858A90]"
+                  isWishlisted ? "fill-rose-500 text-rose-500" : "text-[#123C32]/60 dark:text-[#F4F0E5]/60"
                 }`}
               />
               <span>{isWishlisted ? "Saved" : "Save to Wishlist"}</span>
@@ -246,9 +246,9 @@ export default function StudioDetailPage() {
 
             <button
               onClick={handleShare}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#24272B] border border-[#32363C] text-xs font-semibold text-[#F5F0E8] hover:border-white/20 transition-all"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white dark:bg-[#1A4D41] border border-[#123C32]/15 dark:border-white/15 text-xs font-semibold text-[#123C32] dark:text-[#F4F0E5] hover:border-[#C5A66A] transition-all"
             >
-              <Share2 className="w-4 h-4 text-[#858A90]" />
+              <Share2 className="w-4 h-4 text-[#123C32]/60 dark:text-[#F4F0E5]/60" />
               <span>Share</span>
             </button>
           </div>
@@ -256,7 +256,7 @@ export default function StudioDetailPage() {
 
         {/* Photography Gallery Section */}
         <div className="mb-12 space-y-4">
-          <div className="relative aspect-[16/9] md:aspect-[21/9] w-full rounded-3xl overflow-hidden border border-[#32363C] bg-[#17191C] shadow-2xl">
+          <div className="relative aspect-[16/9] md:aspect-[21/9] w-full rounded-3xl overflow-hidden border border-[#123C32]/10 dark:border-white/10 bg-white/50 shadow-md">
             <Image
               src={galleryImages[activeImageIndex]}
               alt={studio.title}
@@ -267,7 +267,7 @@ export default function StudioDetailPage() {
               unoptimized
             />
             <div className="absolute top-4 left-4">
-              <span className="px-3 py-1 rounded-full bg-[#17191C]/80 backdrop-blur-md text-xs font-semibold text-[#E7A65A] border border-white/10">
+              <span className="px-3 py-1 rounded-full bg-[#123C32]/80 backdrop-blur-md text-xs font-semibold text-[#F4F0E5] border border-white/10">
                 Studio View {activeImageIndex + 1} of {galleryImages.length}
               </span>
             </div>
@@ -282,7 +282,7 @@ export default function StudioDetailPage() {
                 onClick={() => setActiveImageIndex(idx)}
                 className={`relative aspect-[16/10] rounded-xl overflow-hidden border-2 transition-all ${
                   activeImageIndex === idx
-                    ? "border-[#E7A65A] scale-[1.02] shadow-lg"
+                    ? "border-[#C5A66A] scale-[1.02] shadow-md"
                     : "border-transparent opacity-60 hover:opacity-100"
                 }`}
               >
@@ -304,30 +304,30 @@ export default function StudioDetailPage() {
           {/* Left Column: Specs, Amenities, Overview, Host Info */}
           <div className="lg:col-span-2 space-y-10">
             {/* Quick Metrics */}
-            <div className="grid grid-cols-3 gap-4 p-6 rounded-2xl bg-[#24272B] border border-[#32363C]">
+            <div className="grid grid-cols-3 gap-4 p-6 rounded-2xl bg-white dark:bg-[#1A4D41] border border-[#123C32]/10 dark:border-white/10 shadow-sm">
               <div>
-                <span className="text-xs uppercase text-[#858A90] font-semibold block mb-1">
+                <span className="text-xs uppercase text-[#123C32]/60 dark:text-[#F4F0E5]/60 font-semibold block mb-1">
                   Hourly Rate
                 </span>
-                <span className="font-serif text-2xl font-bold text-[#E7A65A]">
+                <span className="font-serif text-2xl font-bold text-[#123C32] dark:text-[#C5A66A]">
                   ${studio.hourlyRate}
-                  <span className="text-xs font-sans text-[#858A90]"> / hr</span>
+                  <span className="text-xs font-sans text-[#123C32]/60 dark:text-[#F4F0E5]/60"> / hr</span>
                 </span>
               </div>
               <div>
-                <span className="text-xs uppercase text-[#858A90] font-semibold block mb-1">
+                <span className="text-xs uppercase text-[#123C32]/60 dark:text-[#F4F0E5]/60 font-semibold block mb-1">
                   Max Capacity
                 </span>
-                <span className="font-serif text-2xl font-bold text-[#F5F0E8] flex items-center gap-1.5">
-                  <Users className="w-5 h-5 text-[#E7A65A]" />
+                <span className="font-serif text-2xl font-bold text-[#123C32] dark:text-[#F4F0E5] flex items-center gap-1.5">
+                  <Users className="w-5 h-5 text-[#C5A66A]" />
                   <span>{studio.maxCapacity}</span>
                 </span>
               </div>
               <div>
-                <span className="text-xs uppercase text-[#858A90] font-semibold block mb-1">
+                <span className="text-xs uppercase text-[#123C32]/60 dark:text-[#F4F0E5]/60 font-semibold block mb-1">
                   Deposit
                 </span>
-                <span className="font-serif text-2xl font-bold text-[#F5F0E8]">
+                <span className="font-serif text-2xl font-bold text-[#123C32] dark:text-[#F4F0E5]">
                   ${studio.securityDeposit || 0}
                 </span>
               </div>
@@ -335,26 +335,26 @@ export default function StudioDetailPage() {
 
             {/* Overview */}
             <div className="space-y-4">
-              <h2 className="font-serif text-2xl font-bold text-[#F5F0E8]">
+              <h2 className="font-serif text-2xl font-bold text-[#123C32] dark:text-[#F4F0E5]">
                 About This Workspace
               </h2>
-              <p className="text-sm leading-relaxed text-[#858A90] whitespace-pre-line">
+              <p className="text-sm leading-relaxed text-[#123C32]/75 dark:text-[#F4F0E5]/75 whitespace-pre-line">
                 {studio.description}
               </p>
             </div>
 
             {/* Amenities Grid */}
             <div className="space-y-4">
-              <h2 className="font-serif text-2xl font-bold text-[#F5F0E8]">
+              <h2 className="font-serif text-2xl font-bold text-[#123C32] dark:text-[#F4F0E5]">
                 Production Equipment & Amenities
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {studio.amenities.map((amenity, index) => (
                   <div
                     key={index}
-                    className="flex items-center gap-3 p-3.5 rounded-xl bg-[#24272B] border border-[#32363C] text-xs font-medium text-[#F5F0E8]"
+                    className="flex items-center gap-3 p-3.5 rounded-xl bg-white dark:bg-[#1A4D41] border border-[#123C32]/10 dark:border-white/10 text-xs font-medium text-[#123C32] dark:text-[#F4F0E5] shadow-sm"
                   >
-                    <CheckCircle2 className="w-4 h-4 text-[#E7A65A] shrink-0" />
+                    <CheckCircle2 className="w-4 h-4 text-[#C5A66A] shrink-0" />
                     <span>{amenity}</span>
                   </div>
                 ))}
@@ -362,29 +362,29 @@ export default function StudioDetailPage() {
             </div>
 
             {/* Host Identity Card */}
-            <div className="p-6 rounded-2xl bg-[#24272B] border border-[#32363C] space-y-4">
-              <div className="flex items-center justify-between border-b border-[#32363C] pb-4">
+            <div className="p-6 rounded-2xl bg-white dark:bg-[#1A4D41] border border-[#123C32]/10 dark:border-white/10 space-y-4 shadow-sm">
+              <div className="flex items-center justify-between border-b border-[#123C32]/10 dark:border-white/10 pb-4">
                 <div className="flex items-center gap-3.5">
-                  <div className="w-12 h-12 rounded-full bg-[#17191C] border border-[#E7A65A]/40 flex items-center justify-center font-serif font-bold text-[#E7A65A] text-lg">
+                  <div className="w-12 h-12 rounded-full bg-[#C5A66A]/20 border border-[#C5A66A]/40 flex items-center justify-center font-serif font-bold text-[#123C32] dark:text-[#C5A66A] text-lg">
                     {studio.ownerName.charAt(0)}
                   </div>
                   <div>
-                    <h3 className="font-serif text-lg font-bold text-[#F5F0E8]">
+                    <h3 className="font-serif text-lg font-bold text-[#123C32] dark:text-[#F4F0E5]">
                       Hosted by {studio.ownerName}
                     </h3>
-                    <p className="text-xs text-[#858A90]">
+                    <p className="text-xs text-[#123C32]/60 dark:text-[#F4F0E5]/60">
                       Verified StudioSpace Facility Partner
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-xs font-semibold text-emerald-400">
+                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
                   <ShieldCheck className="w-4 h-4" />
                   <span>Verified Host</span>
                 </div>
               </div>
 
-              <p className="text-xs text-[#858A90] leading-relaxed">
+              <p className="text-xs text-[#123C32]/70 dark:text-[#F4F0E5]/70 leading-relaxed">
                 Direct on-site support and gear checkout available during all booked production slots. Contact verified at {studio.ownerEmail}.
               </p>
             </div>
@@ -392,16 +392,16 @@ export default function StudioDetailPage() {
 
           {/* Right Column: Sticky Booking Card & Price Calculator */}
           <div className="lg:col-span-1 sticky top-24">
-            <div className="p-6 rounded-3xl bg-[#24272B] border border-[#32363C] shadow-2xl space-y-6">
-              <div className="flex items-baseline justify-between border-b border-[#32363C] pb-4">
+            <div className="p-6 rounded-3xl bg-white dark:bg-[#1A4D41] border border-[#123C32]/10 dark:border-white/10 shadow-lg space-y-6">
+              <div className="flex items-baseline justify-between border-b border-[#123C32]/10 dark:border-white/10 pb-4">
                 <div>
-                  <span className="font-serif text-3xl font-bold text-[#E7A65A]">
+                  <span className="font-serif text-3xl font-bold text-[#123C32] dark:text-[#C5A66A]">
                     ${studio.hourlyRate}
                   </span>
-                  <span className="text-xs text-[#858A90] ml-1">/ hour</span>
+                  <span className="text-xs text-[#123C32]/60 dark:text-[#F4F0E5]/60 ml-1">/ hour</span>
                 </div>
-                <div className="flex items-center gap-1 text-xs text-[#F5F0E8] font-semibold">
-                  <Star className="w-3.5 h-3.5 fill-[#E7A65A] text-[#E7A65A]" />
+                <div className="flex items-center gap-1 text-xs text-[#123C32] dark:text-[#F4F0E5] font-semibold">
+                  <Star className="w-3.5 h-3.5 fill-[#C5A66A] text-[#C5A66A]" />
                   <span>{studio.rating.toFixed(2)}</span>
                 </div>
               </div>
@@ -409,17 +409,17 @@ export default function StudioDetailPage() {
               <form onSubmit={handleBookingSubmit} className="space-y-4">
                 {/* Date Picker */}
                 <div>
-                  <label className="block text-xs uppercase font-semibold text-[#858A90] tracking-wider mb-2">
+                  <label className="block text-xs uppercase font-semibold text-[#123C32]/70 dark:text-[#F4F0E5]/70 tracking-wider mb-2">
                     Booking Date
                   </label>
                   <div className="relative">
-                    <Calendar className="absolute left-3.5 top-3 w-4 h-4 text-[#858A90]" />
+                    <Calendar className="absolute left-3.5 top-3 w-4 h-4 text-[#123C32]/50 dark:text-[#F4F0E5]/50" />
                     <input
                       type="date"
                       required
                       value={bookingDate}
                       onChange={(e) => setBookingDate(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#17191C] border border-[#32363C] text-xs text-[#F5F0E8] focus:outline-none focus:border-[#E7A65A] transition-colors cursor-pointer"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#F4F0E5]/60 dark:bg-[#123C32]/50 border border-[#123C32]/15 dark:border-white/15 text-xs text-[#123C32] dark:text-[#F4F0E5] focus:outline-none focus:border-[#C5A66A] transition-colors cursor-pointer"
                     />
                   </div>
                 </div>
@@ -427,15 +427,15 @@ export default function StudioDetailPage() {
                 {/* Time Slot Selectors */}
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs uppercase font-semibold text-[#858A90] tracking-wider mb-2">
+                    <label className="block text-xs uppercase font-semibold text-[#123C32]/70 dark:text-[#F4F0E5]/70 tracking-wider mb-2">
                       Start Time
                     </label>
                     <div className="relative">
-                      <Clock className="absolute left-3 top-3 w-3.5 h-3.5 text-[#858A90]" />
+                      <Clock className="absolute left-3 top-3 w-3.5 h-3.5 text-[#123C32]/50 dark:text-[#F4F0E5]/50" />
                       <select
                         value={startTime}
                         onChange={(e) => setStartTime(e.target.value)}
-                        className="w-full pl-9 pr-2 py-2.5 rounded-xl bg-[#17191C] border border-[#32363C] text-xs text-[#F5F0E8] focus:outline-none focus:border-[#E7A65A] transition-colors cursor-pointer"
+                        className="w-full pl-9 pr-2 py-2.5 rounded-xl bg-[#F4F0E5]/60 dark:bg-[#123C32]/50 border border-[#123C32]/15 dark:border-white/15 text-xs text-[#123C32] dark:text-[#F4F0E5] focus:outline-none focus:border-[#C5A66A] transition-colors cursor-pointer"
                       >
                         <option value="08:00">08:00 AM</option>
                         <option value="10:00">10:00 AM</option>
@@ -448,15 +448,15 @@ export default function StudioDetailPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs uppercase font-semibold text-[#858A90] tracking-wider mb-2">
+                    <label className="block text-xs uppercase font-semibold text-[#123C32]/70 dark:text-[#F4F0E5]/70 tracking-wider mb-2">
                       End Time
                     </label>
                     <div className="relative">
-                      <Clock className="absolute left-3 top-3 w-3.5 h-3.5 text-[#858A90]" />
+                      <Clock className="absolute left-3 top-3 w-3.5 h-3.5 text-[#123C32]/50 dark:text-[#F4F0E5]/50" />
                       <select
                         value={endTime}
                         onChange={(e) => setEndTime(e.target.value)}
-                        className="w-full pl-9 pr-2 py-2.5 rounded-xl bg-[#17191C] border border-[#32363C] text-xs text-[#F5F0E8] focus:outline-none focus:border-[#E7A65A] transition-colors cursor-pointer"
+                        className="w-full pl-9 pr-2 py-2.5 rounded-xl bg-[#F4F0E5]/60 dark:bg-[#123C32]/50 border border-[#123C32]/15 dark:border-white/15 text-xs text-[#123C32] dark:text-[#F4F0E5] focus:outline-none focus:border-[#C5A66A] transition-colors cursor-pointer"
                       >
                         <option value="12:00">12:00 PM</option>
                         <option value="14:00">02:00 PM</option>
@@ -470,20 +470,20 @@ export default function StudioDetailPage() {
                 </div>
 
                 {/* Price Calculation Breakdown */}
-                <div className="p-4 rounded-xl bg-[#17191C] border border-white/5 space-y-2.5 text-xs">
-                  <div className="flex justify-between text-[#858A90]">
+                <div className="p-4 rounded-xl bg-[#F4F0E5]/70 dark:bg-[#123C32]/60 border border-[#123C32]/10 dark:border-white/10 space-y-2.5 text-xs">
+                  <div className="flex justify-between text-[#123C32]/70 dark:text-[#F4F0E5]/70">
                     <span>${studio.hourlyRate} x {hours} shoot hours</span>
-                    <span className="text-[#F5F0E8] font-medium">${subtotal}</span>
+                    <span className="text-[#123C32] dark:text-[#F4F0E5] font-semibold">${subtotal}</span>
                   </div>
 
-                  <div className="flex justify-between text-[#858A90]">
+                  <div className="flex justify-between text-[#123C32]/70 dark:text-[#F4F0E5]/70">
                     <span>Refundable Security Deposit</span>
-                    <span className="text-[#F5F0E8] font-medium">${studio.securityDeposit || 0}</span>
+                    <span className="text-[#123C32] dark:text-[#F4F0E5] font-semibold">${studio.securityDeposit || 0}</span>
                   </div>
 
-                  <div className="border-t border-[#32363C] pt-2 flex justify-between font-bold text-sm text-[#F5F0E8]">
+                  <div className="border-t border-[#123C32]/10 dark:border-white/10 pt-2 flex justify-between font-bold text-sm text-[#123C32] dark:text-[#F4F0E5]">
                     <span>Estimated Total</span>
-                    <span className="text-[#E7A65A]">${total}</span>
+                    <span className="text-[#C5A66A]">${total}</span>
                   </div>
                 </div>
 
@@ -493,7 +493,7 @@ export default function StudioDetailPage() {
                   variant="primary"
                   size="lg"
                   disabled={isBooking}
-                  className="w-full gap-2 font-semibold shadow-lg shadow-[#E7A65A]/20"
+                  className="w-full gap-2 font-semibold shadow-sm"
                 >
                   {isBooking ? (
                     <>
@@ -509,8 +509,8 @@ export default function StudioDetailPage() {
                 </Button>
               </form>
 
-              <div className="flex items-center gap-2 text-[11px] text-[#858A90] justify-center text-center">
-                <Info className="w-3.5 h-3.5 text-[#E7A65A] shrink-0" />
+              <div className="flex items-center gap-2 text-[11px] text-[#123C32]/60 dark:text-[#F4F0E5]/60 justify-center text-center">
+                <Info className="w-3.5 h-3.5 text-[#C5A66A] shrink-0" />
                 <span>You will not be billed until the host confirms availability</span>
               </div>
             </div>

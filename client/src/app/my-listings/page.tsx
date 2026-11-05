@@ -63,17 +63,17 @@ export default function MyListingsPage() {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-[#17191C] text-[#F5F0E8] py-12">
+      <div className="min-h-screen bg-[#F4F0E5] dark:bg-[#123C32] text-[#123C32] dark:text-[#F4F0E5] py-14 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10">
             <div>
-              <span className="text-xs uppercase font-semibold text-[#E7A65A] tracking-widest block mb-1">
+              <span className="text-xs uppercase font-bold text-[#C5A66A] tracking-wider block mb-1">
                 Host Management
               </span>
-              <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[#F5F0E8]">
+              <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#123C32] dark:text-[#F4F0E5]">
                 My Studio Listings
               </h1>
-              <p className="text-xs sm:text-sm text-[#858A90] mt-1">
+              <p className="text-xs sm:text-sm text-[#123C32]/70 dark:text-[#F4F0E5]/70 mt-1">
                 Manage your active production facilities, update specs, and monitor listings.
               </p>
             </div>
@@ -90,12 +90,12 @@ export default function MyListingsPage() {
               {[1, 2, 3].map((n) => (
                 <div
                   key={n}
-                  className="rounded-2xl bg-[#24272B] border border-[#32363C] p-4 space-y-4 animate-pulse"
+                  className="rounded-2xl bg-white dark:bg-[#1A4D41] border border-[#123C32]/10 dark:border-white/10 p-4 space-y-4 animate-pulse shadow-sm"
                 >
-                  <div className="aspect-[16/9] bg-[#17191C] rounded-xl" />
-                  <div className="h-5 bg-[#32363C] rounded w-3/4" />
-                  <div className="h-4 bg-[#32363C] rounded w-1/2" />
-                  <div className="h-10 bg-[#17191C] rounded" />
+                  <div className="aspect-[16/9] bg-[#123C32]/10 dark:bg-white/10 rounded-xl" />
+                  <div className="h-5 bg-[#123C32]/10 dark:bg-white/10 rounded w-3/4" />
+                  <div className="h-4 bg-[#123C32]/10 dark:bg-white/10 rounded w-1/2" />
+                  <div className="h-10 bg-[#123C32]/10 dark:bg-white/10 rounded" />
                 </div>
               ))}
             </div>
@@ -104,10 +104,10 @@ export default function MyListingsPage() {
               {studios.map((studio) => (
                 <div
                   key={studio._id}
-                  className="rounded-2xl bg-[#24272B] border border-[#32363C] overflow-hidden flex flex-col justify-between shadow-xl group hover:border-[#E7A65A]/50 transition-all duration-300"
+                  className="rounded-2xl bg-white dark:bg-[#1A4D41] border border-[#123C32]/10 dark:border-white/10 overflow-hidden flex flex-col justify-between shadow-sm group hover:border-[#C5A66A]/60 transition-all duration-300"
                 >
                   <div>
-                    <div className="relative aspect-[16/9] w-full bg-[#17191C]">
+                    <div className="relative aspect-[16/9] w-full bg-[#F4F0E5]/40 dark:bg-[#123C32]/40">
                       <Image
                         src={studio.imageUrl}
                         alt={studio.title}
@@ -119,30 +119,30 @@ export default function MyListingsPage() {
                       <div className="absolute top-3 left-3">
                         <Badge variant="primary">{studio.category}</Badge>
                       </div>
-                      <div className="absolute top-3 right-3 bg-[#17191C]/90 backdrop-blur-md px-2.5 py-1 rounded-full text-xs font-semibold text-[#E7A65A] border border-white/10">
+                      <div className="absolute top-3 right-3 bg-[#123C32]/90 backdrop-blur-md px-2.5 py-1 rounded-full text-xs font-semibold text-[#F4F0E5] border border-white/10">
                         ${studio.hourlyRate}/hr
                       </div>
                     </div>
 
                     <div className="p-5">
-                      <h3 className="font-serif text-lg font-bold text-[#F5F0E8] line-clamp-1 mb-1">
+                      <h3 className="font-serif text-lg font-bold text-[#123C32] dark:text-[#F4F0E5] line-clamp-1 mb-1">
                         {studio.title}
                       </h3>
-                      <div className="flex items-center gap-1.5 text-xs text-[#858A90] mb-4">
-                        <MapPin className="w-3.5 h-3.5 text-[#E7A65A] shrink-0" />
+                      <div className="flex items-center gap-1.5 text-xs text-[#123C32]/70 dark:text-[#F4F0E5]/70 mb-4">
+                        <MapPin className="w-3.5 h-3.5 text-[#C5A66A] shrink-0" />
                         <span className="line-clamp-1">{studio.location}</span>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-2 p-3 rounded-xl bg-[#17191C] text-xs mb-4 border border-white/5">
+                      <div className="grid grid-cols-2 gap-2 p-3 rounded-xl bg-[#F4F0E5]/70 dark:bg-[#123C32]/60 text-xs mb-4 border border-[#123C32]/10 dark:border-white/10">
                         <div>
-                          <span className="text-[#858A90] block">Capacity:</span>
-                          <span className="font-semibold text-[#F5F0E8]">
+                          <span className="text-[#123C32]/60 dark:text-[#F4F0E5]/60 block">Capacity:</span>
+                          <span className="font-semibold text-[#123C32] dark:text-[#F4F0E5]">
                             Up to {studio.maxCapacity} people
                           </span>
                         </div>
                         <div>
-                          <span className="text-[#858A90] block">Deposit:</span>
-                          <span className="font-semibold text-[#F5F0E8]">
+                          <span className="text-[#123C32]/60 dark:text-[#F4F0E5]/60 block">Deposit:</span>
+                          <span className="font-semibold text-[#123C32] dark:text-[#F4F0E5]">
                             ${studio.securityDeposit}
                           </span>
                         </div>
@@ -151,10 +151,10 @@ export default function MyListingsPage() {
                   </div>
 
                   {/* Actions Bar */}
-                  <div className="p-5 pt-0 flex items-center justify-between gap-2 border-t border-[#32363C]/60 mt-2">
+                  <div className="p-5 pt-0 flex items-center justify-between gap-2 border-t border-[#123C32]/10 dark:border-white/10 mt-2">
                     <Link
                       href={`/studios/${studio._id}`}
-                      className="p-2 text-[#858A90] hover:text-[#E7A65A] hover:bg-[#17191C] rounded-lg transition-colors"
+                      className="p-2 text-[#123C32]/60 dark:text-[#F4F0E5]/60 hover:text-[#C5A66A] hover:bg-[#F4F0E5] dark:hover:bg-[#123C32] rounded-lg transition-colors"
                       title="View Public Listing"
                     >
                       <ExternalLink className="w-4 h-4" />
@@ -176,7 +176,7 @@ export default function MyListingsPage() {
                         variant="ghost"
                         size="sm"
                         onClick={() => setStudioToDelete(studio)}
-                        className="gap-1.5 text-xs text-rose-400 hover:text-rose-300 hover:bg-rose-500/10"
+                        className="gap-1.5 text-xs text-rose-500 hover:text-rose-600 hover:bg-rose-500/10"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                         <span>Delete</span>
@@ -187,14 +187,14 @@ export default function MyListingsPage() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-20 px-4 rounded-3xl bg-[#24272B] border border-[#32363C]">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-[#E7A65A]/10 border border-[#E7A65A]/30 flex items-center justify-center text-[#E7A65A]">
+            <div className="text-center py-20 px-4 rounded-3xl bg-white dark:bg-[#1A4D41] border border-[#123C32]/10 dark:border-white/10 shadow-sm">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-[#C5A66A]/10 border border-[#C5A66A]/30 flex items-center justify-center text-[#C5A66A]">
                 <Building className="w-8 h-8" />
               </div>
-              <h2 className="font-serif text-2xl font-bold text-[#F5F0E8] mb-2">
+              <h2 className="font-serif text-2xl font-bold text-[#123C32] dark:text-[#F4F0E5] mb-2">
                 No Workspace Listings Yet
               </h2>
-              <p className="text-sm text-[#858A90] max-w-md mx-auto mb-6">
+              <p className="text-sm text-[#123C32]/70 dark:text-[#F4F0E5]/70 max-w-md mx-auto mb-6">
                 You haven&apos;t listed any studios or creative sound stages yet. Start monetizing your space today!
               </p>
               <Link href="/add-studio">
@@ -209,19 +209,19 @@ export default function MyListingsPage() {
 
         {/* Custom Confirmation Modal Dialog (No browser alert) */}
         {studioToDelete && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-            <div className="w-full max-w-md rounded-3xl bg-[#24272B] border border-[#32363C] p-6 sm:p-8 shadow-2xl space-y-6">
-              <div className="w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+            <div className="w-full max-w-md rounded-3xl bg-white dark:bg-[#1A4D41] border border-[#123C32]/10 dark:border-white/10 p-6 sm:p-8 shadow-2xl space-y-6">
+              <div className="w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-500">
                 <AlertTriangle className="w-6 h-6" />
               </div>
 
               <div>
-                <h3 className="font-serif text-xl font-bold text-[#F5F0E8] mb-1.5">
+                <h3 className="font-serif text-xl font-bold text-[#123C32] dark:text-[#F4F0E5] mb-1.5">
                   Confirm Listing Deletion
                 </h3>
-                <p className="text-xs sm:text-sm text-[#858A90] leading-relaxed">
+                <p className="text-xs sm:text-sm text-[#123C32]/70 dark:text-[#F4F0E5]/70 leading-relaxed">
                   Are you sure you want to remove{" "}
-                  <strong className="text-[#F5F0E8]">
+                  <strong className="text-[#123C32] dark:text-[#F4F0E5]">
                     &quot;{studioToDelete.title}&quot;
                   </strong>{" "}
                   from StudioSpace? All dynamic slot availability and listing data will be permanently deleted.
@@ -242,7 +242,7 @@ export default function MyListingsPage() {
                   size="md"
                   onClick={handleConfirmDelete}
                   disabled={isDeleting}
-                  className="bg-rose-600 hover:bg-rose-500 text-white border-transparent gap-2 font-semibold"
+                  className="bg-rose-600 hover:bg-rose-700 text-white border-transparent gap-2 font-semibold"
                 >
                   {isDeleting ? (
                     <>

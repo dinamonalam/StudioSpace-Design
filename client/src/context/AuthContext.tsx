@@ -9,7 +9,10 @@ interface AuthContextType {
   user: UserSession | null;
   loading: boolean;
   login: (email: string, pass: string, redirectUrl?: string) => Promise<boolean>;
-  loginWithGoogle: (redirectUrl?: string) => Promise<void>;
+  loginWithGoogle: (
+    redirectUrl?: string,
+    googleProfile?: { name?: string; email?: string; image?: string }
+  ) => Promise<boolean>;
   register: (name: string, email: string, pass: string, photoUrl?: string) => Promise<boolean>;
   logout: () => void;
 }
@@ -18,7 +21,7 @@ const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
   login: async () => false,
-  loginWithGoogle: async () => {},
+  loginWithGoogle: async () => false,
   register: async () => false,
   logout: () => {},
 });
@@ -128,25 +131,73 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 
   const loginWithGoogle = useCallback(
-    async (redirectUrl?: string) => {
+    async (
+      redirectUrl?: string,
+      googleProfile?: { name?: string; email?: string; image?: string }
+    ): Promise<boolean> => {
       setLoading(true);
       try {
-        const googleUser: UserSession = {
-          id: "usr-google-alex",
-          name: "Alex Director",
-          email: "alex.director@gmail.com",
-          image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200&auto=format&fit=crop",
-        };
+        const gName = googleProfile?.name?.trim() || "Dinamon Alam";
+        const gEmail = googleProfile?.email?.trim().toLowerCase() || "dinamonalam@gmail.com";
+        const gImage =
+          googleProfile?.image?.trim() ||
+          `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(gName)}`;
 
-        setUser(googleUser);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(googleUser));
-        setAuthCookie(googleUser.email);
+        let sessionUser: UserSession;
 
-        toast.success("Successfully authenticated with Google!");
+        try {
+          const apiRes = await fetch("http://localhost:5000/api/auth/google", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({
+              name: gName,
+              email: gEmail,
+              image: gImage,
+            }),
+          });
+
+          const data = await apiRes.json();
+          if (data.success && data.user) {
+            sessionUser = {
+              id: data.user.id || data.user._id,
+              name: data.user.name,
+              email: data.user.email,
+              image: data.user.image || gImage,
+              role: data.user.role || "creator",
+            };
+          } else {
+            sessionUser = {
+              id: "usr-google-" + Date.now(),
+              name: gName,
+              email: gEmail,
+              image: gImage,
+              role: "creator",
+            };
+          }
+        } catch {
+          sessionUser = {
+            id: "usr-google-" + Date.now(),
+            name: gName,
+            email: gEmail,
+            image: gImage,
+            role: "creator",
+          };
+        }
+
+        setUser(sessionUser);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(sessionUser));
+        setAuthCookie(sessionUser.email);
+
+        toast.success(`Welcome back, ${sessionUser.name}! Signed in with Google.`);
         const target = redirectUrl && redirectUrl.startsWith("/") ? redirectUrl : "/dashboard";
         router.push(target);
+        return true;
       } catch {
         toast.error("Google authentication failed.");
+        return false;
       } finally {
         setLoading(false);
       }

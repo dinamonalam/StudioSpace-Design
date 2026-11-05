@@ -25,14 +25,14 @@ export function StudioLogo({ className, iconOnly = false, size = "md" }: StudioL
     <Link
       href="/"
       className={cn(
-        "inline-flex items-center gap-3 group transition-transform duration-200 active:scale-95 focus:outline-none",
+        "inline-flex items-center gap-2.5 group transition-transform duration-200 active:scale-95 focus:outline-none",
         className
       )}
       aria-label="StudioSpace Home"
     >
       <div
         className={cn(
-          "relative flex items-center justify-center rounded-xl bg-gradient-to-br from-[#E7A65A] via-[#D49547] to-[#8C581E] p-2 shadow-md shadow-[#E7A65A]/20 transition-all duration-300 group-hover:shadow-lg group-hover:shadow-[#E7A65A]/30 group-hover:scale-105",
+          "relative flex items-center justify-center rounded-xl bg-[#123C32] dark:bg-[#C5A66A] p-2 shadow-sm transition-all duration-300 group-hover:scale-105",
           sizeClasses[size]
         )}
       >
@@ -41,9 +41,8 @@ export function StudioLogo({ className, iconOnly = false, size = "md" }: StudioL
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-full text-[#17191C]"
+          className="w-full h-full text-[#C5A66A] dark:text-[#123C32]"
         >
-          {/* Spotlight Lens Ring */}
           <circle
             cx="12"
             cy="12"
@@ -52,43 +51,30 @@ export function StudioLogo({ className, iconOnly = false, size = "md" }: StudioL
             strokeWidth="1.8"
             className="opacity-90"
           />
-          {/* Inner Aperture Blades */}
-          <path
-            d="M12 2C8 6 6 10 6 12L12 8L18 12C18 10 16 6 12 2Z"
-            fill="currentColor"
-            fillOpacity="0.85"
-          />
-          <path
-            d="M22 12C18 16 14 18 12 18L16 12L12 6C14 6 18 8 22 12Z"
-            fill="currentColor"
-            fillOpacity="0.85"
-          />
-          <path
-            d="M12 22C16 18 18 14 18 12L12 16L6 12C6 14 8 18 12 22Z"
-            fill="currentColor"
-            fillOpacity="0.85"
-          />
-          <path
-            d="M2 12C6 8 10 6 12 6L8 12L12 18C10 18 6 16 2 12Z"
-            fill="currentColor"
-            fillOpacity="0.85"
-          />
-          {/* Spotlight Core Beam center */}
-          <circle cx="12" cy="12" r="2.4" fill="currentColor" />
+          <path d="m14.31 8 5.74 9.94" stroke="currentColor" strokeWidth="1.8" />
+          <path d="M9.69 8h11.48" stroke="currentColor" strokeWidth="1.8" />
+          <path d="m7.38 12 5.74-9.94" stroke="currentColor" strokeWidth="1.8" />
+          <path d="M9.69 16 3.95 6.06" stroke="currentColor" strokeWidth="1.8" />
+          <path d="M14.31 16H2.83" stroke="currentColor" strokeWidth="1.8" />
+          <path d="m16.62 12-5.74 9.94" stroke="currentColor" strokeWidth="1.8" />
         </svg>
       </div>
 
       {!iconOnly && (
-        <span
-          className={cn(
-            "font-serif font-bold tracking-tight text-[#F5F0E8] dark:text-[#F5F0E8] transition-colors group-hover:text-[#E7A65A]",
-            textClasses[size]
-          )}
-        >
-          Studio<span className="text-[#E7A65A]">Space</span>
-        </span>
+        <div className="flex flex-col">
+          <span
+            className={cn(
+              "font-serif font-bold tracking-tight leading-none text-[#123C32] dark:text-[#F4F0E5]",
+              textClasses[size]
+            )}
+          >
+            Studio<span className="text-[#C5A66A]">Space</span>
+          </span>
+          <span className="text-[9px] uppercase tracking-widest text-[#123C32]/60 dark:text-[#F4F0E5]/60 font-semibold font-sans mt-0.5">
+            Creative Marketplace
+          </span>
+        </div>
       )}
     </Link>
   );
 }
-

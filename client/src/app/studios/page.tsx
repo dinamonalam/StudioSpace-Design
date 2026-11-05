@@ -127,39 +127,39 @@ function StudiosContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#17191C] text-[#F5F0E8] py-12">
+    <div className="min-h-screen bg-[#F4F0E5] dark:bg-[#123C32] text-[#123C32] dark:text-[#F4F0E5] py-14 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-10">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E7A65A]/15 border border-[#E7A65A]/30 text-xs font-semibold text-[#E7A65A] mb-3">
-            <Compass className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C5A66A]/15 border border-[#C5A66A]/30 text-xs font-semibold text-[#123C32] dark:text-[#C5A66A] mb-3">
+            <Compass className="w-3.5 h-3.5 text-[#C5A66A]" />
             <span>Creative Marketplace Directory</span>
           </div>
-          <h1 className="font-serif text-3xl sm:text-5xl font-bold text-[#F5F0E8] leading-tight">
+          <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#123C32] dark:text-[#F4F0E5] leading-tight">
             Explore All Production Studios
           </h1>
-          <p className="text-sm sm:text-base text-[#858A90] mt-2 max-w-2xl">
+          <p className="text-sm sm:text-base text-[#123C32]/75 dark:text-[#F4F0E5]/75 mt-2 max-w-2xl">
             Discover verified photography cyc walls, cinema sound stages, podcast lounges, and sound suites with transparent hourly rates.
           </p>
         </div>
 
         {/* Filter Controls Bar */}
-        <div className="bg-[#24272B] border border-[#32363C] rounded-2xl p-5 mb-8 space-y-4 shadow-xl">
+        <div className="bg-white dark:bg-[#1A4D41] border border-[#123C32]/10 dark:border-white/10 rounded-2xl p-5 mb-8 space-y-4 shadow-sm">
           <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
             {/* Search Input */}
             <div className="relative w-full lg:w-96">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#858A90]" />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#123C32]/50 dark:text-[#F4F0E5]/50" />
               <input
                 type="text"
                 placeholder="Search studio name, city, district..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-[#17191C] border border-[#32363C] rounded-xl pl-10 pr-9 py-2.5 text-xs text-[#F5F0E8] placeholder:text-[#858A90] focus:outline-none focus:border-[#E7A65A] transition-colors"
+                className="w-full bg-[#F4F0E5]/60 dark:bg-[#123C32]/50 border border-[#123C32]/15 dark:border-white/15 rounded-xl pl-10 pr-9 py-2.5 text-xs text-[#123C32] dark:text-[#F4F0E5] placeholder:text-[#123C32]/45 dark:placeholder:text-[#F4F0E5]/45 focus:outline-none focus:border-[#C5A66A] transition-colors"
               />
               {searchTerm && (
                 <button
                   onClick={() => setSearchTerm("")}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#858A90] hover:text-[#F5F0E8]"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#123C32]/60 dark:text-[#F4F0E5]/60 hover:text-[#123C32] dark:hover:text-[#F4F0E5]"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -169,9 +169,9 @@ function StudiosContent() {
             {/* Filter Sliders & Selectors */}
             <div className="flex flex-wrap items-center gap-4 w-full lg:w-auto justify-start lg:justify-end">
               {/* Hourly Price Range */}
-              <div className="flex items-center gap-2 bg-[#17191C] border border-[#32363C] rounded-xl px-3 py-2 text-xs text-[#858A90]">
+              <div className="flex items-center gap-2 bg-[#F4F0E5]/60 dark:bg-[#123C32]/50 border border-[#123C32]/15 dark:border-white/15 rounded-xl px-3 py-2 text-xs text-[#123C32]/80 dark:text-[#F4F0E5]/80">
                 <span>Max:</span>
-                <span className="font-bold text-[#E7A65A]">${maxPriceFilter}/hr</span>
+                <span className="font-bold text-[#123C32] dark:text-[#C5A66A]">${maxPriceFilter}/hr</span>
                 <input
                   type="range"
                   min="40"
@@ -179,20 +179,20 @@ function StudiosContent() {
                   step="10"
                   value={maxPriceFilter}
                   onChange={(e) => setMaxPriceFilter(Number(e.target.value))}
-                  className="w-20 accent-[#E7A65A] cursor-pointer"
+                  className="w-20 accent-[#123C32] dark:accent-[#C5A66A] cursor-pointer"
                 />
               </div>
 
               {/* Amenity Filter */}
-              <div className="flex items-center gap-1.5 bg-[#17191C] border border-[#32363C] rounded-xl px-3 py-2 text-xs">
-                <span className="text-[#858A90]">Gear:</span>
+              <div className="flex items-center gap-1.5 bg-[#F4F0E5]/60 dark:bg-[#123C32]/50 border border-[#123C32]/15 dark:border-white/15 rounded-xl px-3 py-2 text-xs">
+                <span className="text-[#123C32]/70 dark:text-[#F4F0E5]/70">Gear:</span>
                 <select
                   value={selectedAmenity}
                   onChange={(e) => setSelectedAmenity(e.target.value)}
-                  className="bg-transparent text-[#F5F0E8] font-medium focus:outline-none cursor-pointer max-w-[130px] truncate"
+                  className="bg-transparent text-[#123C32] dark:text-[#F4F0E5] font-medium focus:outline-none cursor-pointer max-w-[130px] truncate"
                 >
                   {popularAmenities.map((amenity) => (
-                    <option key={amenity} value={amenity} className="bg-[#17191C]">
+                    <option key={amenity} value={amenity} className="bg-white dark:bg-[#1A4D41] text-[#123C32] dark:text-[#F4F0E5]">
                       {amenity}
                     </option>
                   ))}
@@ -200,26 +200,26 @@ function StudiosContent() {
               </div>
 
               {/* Sort Selector */}
-              <div className="flex items-center gap-2 bg-[#17191C] border border-[#32363C] rounded-xl px-3 py-2 text-xs">
-                <SlidersHorizontal className="w-3.5 h-3.5 text-[#858A90]" />
-                <span className="text-[#858A90]">Sort:</span>
+              <div className="flex items-center gap-2 bg-[#F4F0E5]/60 dark:bg-[#123C32]/50 border border-[#123C32]/15 dark:border-white/15 rounded-xl px-3 py-2 text-xs">
+                <SlidersHorizontal className="w-3.5 h-3.5 text-[#123C32]/50 dark:text-[#F4F0E5]/50" />
+                <span className="text-[#123C32]/70 dark:text-[#F4F0E5]/70">Sort:</span>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
                   aria-label="Sort studios"
-                  className="bg-transparent text-[#F5F0E8] font-medium focus:outline-none cursor-pointer"
+                  className="bg-transparent text-[#123C32] dark:text-[#F4F0E5] font-medium focus:outline-none cursor-pointer"
                 >
-                  <option value="rating" className="bg-[#17191C]">Top Rated</option>
-                  <option value="price-low" className="bg-[#17191C]">Price: Low to High</option>
-                  <option value="price-high" className="bg-[#17191C]">Price: High to Low</option>
-                  <option value="newest" className="bg-[#17191C]">Newest Spaces</option>
+                  <option value="rating" className="bg-white dark:bg-[#1A4D41] text-[#123C32] dark:text-[#F4F0E5]">Top Rated</option>
+                  <option value="price-low" className="bg-white dark:bg-[#1A4D41] text-[#123C32] dark:text-[#F4F0E5]">Price: Low to High</option>
+                  <option value="price-high" className="bg-white dark:bg-[#1A4D41] text-[#123C32] dark:text-[#F4F0E5]">Price: High to Low</option>
+                  <option value="newest" className="bg-white dark:bg-[#1A4D41] text-[#123C32] dark:text-[#F4F0E5]">Newest Spaces</option>
                 </select>
               </div>
 
               {(selectedCategory !== "All" || searchTerm || maxPriceFilter < 300 || selectedAmenity !== "All") && (
                 <button
                   onClick={resetFilters}
-                  className="text-xs text-[#E7A65A] hover:underline flex items-center gap-1"
+                  className="text-xs text-[#C5A66A] hover:underline flex items-center gap-1 font-semibold"
                 >
                   <X className="w-3 h-3" />
                   <span>Reset</span>
@@ -234,10 +234,10 @@ function StudiosContent() {
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all duration-200 cursor-pointer ${
+                className={`px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${
                   selectedCategory === cat
-                    ? "bg-[#E7A65A] text-[#17191C] font-semibold shadow-md shadow-[#E7A65A]/20"
-                    : "bg-[#17191C] text-[#858A90] hover:text-[#F5F0E8] border border-white/5"
+                    ? "bg-[#123C32] dark:bg-[#C5A66A] text-[#F4F0E5] dark:text-[#123C32] shadow-sm"
+                    : "bg-[#F4F0E5]/70 dark:bg-[#123C32]/60 text-[#123C32]/70 dark:text-[#F4F0E5]/70 hover:text-[#123C32] dark:hover:text-[#F4F0E5] border border-[#123C32]/10 dark:border-white/10"
                 }`}
               >
                 {cat === "All" ? "All Categories" : cat}
@@ -247,12 +247,12 @@ function StudiosContent() {
         </div>
 
         {/* Results Count & Active Status */}
-        <div className="flex items-center justify-between text-xs text-[#858A90] mb-6 px-1">
+        <div className="flex items-center justify-between text-xs text-[#123C32]/70 dark:text-[#F4F0E5]/70 mb-6 px-1">
           <span>
-            Showing <strong className="text-[#F5F0E8]">{filteredStudios.length}</strong> creative studio spaces
+            Showing <strong className="text-[#123C32] dark:text-[#F4F0E5]">{filteredStudios.length}</strong> creative studio spaces
           </span>
           {selectedCategory !== "All" && (
-            <span className="text-[#E7A65A]">Filtered by: {selectedCategory}</span>
+            <span className="text-[#C5A66A] font-semibold">Filtered by: {selectedCategory}</span>
           )}
         </div>
 
@@ -262,12 +262,12 @@ function StudiosContent() {
             {[1, 2, 3, 4, 5, 6].map((n) => (
               <div
                 key={n}
-                className="rounded-2xl bg-[#24272B] border border-[#32363C] p-4 space-y-4 animate-pulse"
+                className="rounded-2xl bg-white dark:bg-[#1A4D41] border border-[#123C32]/10 dark:border-white/10 p-4 space-y-4 animate-pulse shadow-sm"
               >
-                <div className="aspect-[16/10] bg-[#17191C] rounded-xl" />
-                <div className="h-5 bg-[#32363C] rounded w-3/4" />
-                <div className="h-4 bg-[#32363C] rounded w-1/2" />
-                <div className="h-10 bg-[#17191C] rounded" />
+                <div className="aspect-[16/10] bg-[#123C32]/10 dark:bg-white/10 rounded-xl" />
+                <div className="h-5 bg-[#123C32]/10 dark:bg-white/10 rounded w-3/4" />
+                <div className="h-4 bg-[#123C32]/10 dark:bg-white/10 rounded w-1/2" />
+                <div className="h-10 bg-[#123C32]/10 dark:bg-white/10 rounded" />
               </div>
             ))}
           </div>
@@ -283,14 +283,14 @@ function StudiosContent() {
           </div>
         ) : (
           /* Empty State */
-          <div className="text-center py-20 px-4 rounded-3xl bg-[#24272B] border border-[#32363C]">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-[#E7A65A]/10 border border-[#E7A65A]/30 flex items-center justify-center text-[#E7A65A]">
+          <div className="text-center py-20 px-4 rounded-3xl bg-white dark:bg-[#1A4D41] border border-[#123C32]/10 dark:border-white/10 shadow-sm">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-[#C5A66A]/10 border border-[#C5A66A]/30 flex items-center justify-center text-[#C5A66A]">
               <Search className="w-8 h-8" />
             </div>
-            <h2 className="font-serif text-2xl font-bold text-[#F5F0E8] mb-2">
+            <h2 className="font-serif text-2xl font-bold text-[#123C32] dark:text-[#F4F0E5] mb-2">
               No Workspaces Match Your Search
             </h2>
-            <p className="text-sm text-[#858A90] max-w-md mx-auto mb-6">
+            <p className="text-sm text-[#123C32]/75 dark:text-[#F4F0E5]/75 max-w-md mx-auto mb-6">
               We couldn&apos;t find any studios matching your current filters. Try adjusting your hourly rate, equipment choices, or search keywords.
             </p>
             <Button
@@ -312,7 +312,7 @@ export default function StudiosPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-[#17191C] flex items-center justify-center text-[#E7A65A]">
+        <div className="min-h-screen bg-[#F4F0E5] dark:bg-[#123C32] flex items-center justify-center text-[#C5A66A]">
           <Loader2 className="w-8 h-8 animate-spin" />
         </div>
       }

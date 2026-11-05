@@ -141,8 +141,8 @@ export default function EditStudioPage() {
   if (loading) {
     return (
       <ProtectedRoute>
-        <div className="min-h-screen bg-[#17191C] flex items-center justify-center">
-          <Loader2 className="w-8 h-8 text-[#E7A65A] animate-spin" />
+        <div className="min-h-screen bg-[#F4F0E5] dark:bg-[#123C32] flex items-center justify-center">
+          <Loader2 className="w-8 h-8 text-[#C5A66A] animate-spin" />
         </div>
       </ProtectedRoute>
     );
@@ -150,76 +150,76 @@ export default function EditStudioPage() {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-[#17191C] text-[#F5F0E8] py-12">
+      <div className="min-h-screen bg-[#F4F0E5] dark:bg-[#123C32] text-[#123C32] dark:text-[#F4F0E5] py-14 transition-colors">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link
             href="/my-listings"
-            className="inline-flex items-center gap-2 text-xs text-[#858A90] hover:text-[#E7A65A] mb-6 transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-semibold text-[#123C32]/70 dark:text-[#F4F0E5]/70 hover:text-[#C5A66A] mb-6 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to My Listings</span>
           </Link>
 
           <div className="mb-8">
-            <span className="text-xs uppercase font-semibold text-[#E7A65A] tracking-widest block mb-1">
+            <span className="text-xs uppercase font-bold text-[#C5A66A] tracking-wider block mb-1">
               Host Facility Editor
             </span>
-            <h1 className="font-serif text-3xl font-bold text-[#F5F0E8]">
+            <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#123C32] dark:text-[#F4F0E5]">
               Update Studio Listing
             </h1>
-            <p className="text-sm text-[#858A90] mt-1">
+            <p className="text-sm text-[#123C32]/75 dark:text-[#F4F0E5]/75 mt-1">
               Keep your pricing, gear inventory, and amenities current for production teams.
             </p>
           </div>
 
           <form
             onSubmit={handleSubmit}
-            className="p-8 sm:p-10 rounded-3xl bg-[#24272B] border border-[#32363C] shadow-2xl space-y-8"
+            className="p-8 sm:p-10 rounded-3xl bg-white dark:bg-[#1A4D41] border border-[#123C32]/10 dark:border-white/10 shadow-sm space-y-8"
           >
             {/* Host Read-Only Info */}
-            <div className="p-4 rounded-2xl bg-[#17191C] border border-white/5 text-xs text-[#858A90] flex flex-col sm:flex-row justify-between gap-2">
+            <div className="p-4 rounded-2xl bg-[#F4F0E5]/70 dark:bg-[#123C32]/60 border border-[#123C32]/10 dark:border-white/10 text-xs text-[#123C32]/70 dark:text-[#F4F0E5]/70 flex flex-col sm:flex-row justify-between gap-2">
               <span>
-                <strong className="text-[#F5F0E8]">Listing Host:</strong> {hostName}
+                <strong className="text-[#123C32] dark:text-[#F4F0E5]">Listing Host:</strong> {hostName}
               </span>
               <span>
-                <strong className="text-[#F5F0E8]">Host Email:</strong> {hostEmail} (Read-only)
+                <strong className="text-[#123C32] dark:text-[#F4F0E5]">Host Email:</strong> {hostEmail} (Read-only)
               </span>
             </div>
 
             {/* Specifications */}
             <div className="space-y-4">
-              <h2 className="font-serif text-xl font-bold text-[#F5F0E8] border-b border-[#32363C] pb-2">
+              <h2 className="font-serif text-xl font-bold text-[#123C32] dark:text-[#F4F0E5] border-b border-[#123C32]/10 dark:border-white/10 pb-2">
                 Studio Specifications
               </h2>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-[#858A90] uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-semibold text-[#123C32]/70 dark:text-[#F4F0E5]/70 uppercase tracking-wider mb-2">
                     Studio Title *
                   </label>
                   <div className="relative">
-                    <Building2 className="absolute left-3.5 top-3.5 w-4 h-4 text-[#858A90]" />
+                    <Building2 className="absolute left-3.5 top-3.5 w-4 h-4 text-[#123C32]/50 dark:text-[#F4F0E5]/50" />
                     <input
                       type="text"
                       required
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#17191C] border border-[#32363C] text-sm text-[#F5F0E8] focus:outline-none focus:border-[#E7A65A] transition-colors"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#F4F0E5]/60 dark:bg-[#123C32]/50 border border-[#123C32]/15 dark:border-white/15 text-sm text-[#123C32] dark:text-[#F4F0E5] focus:outline-none focus:border-[#C5A66A] transition-colors"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#858A90] uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-semibold text-[#123C32]/70 dark:text-[#F4F0E5]/70 uppercase tracking-wider mb-2">
                     Studio Category *
                   </label>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl bg-[#17191C] border border-[#32363C] text-sm text-[#F5F0E8] focus:outline-none focus:border-[#E7A65A] transition-colors"
+                    className="w-full px-4 py-2.5 rounded-xl bg-[#F4F0E5]/60 dark:bg-[#123C32]/50 border border-[#123C32]/15 dark:border-white/15 text-sm text-[#123C32] dark:text-[#F4F0E5] focus:outline-none focus:border-[#C5A66A] transition-colors"
                   >
                     {CATEGORIES.map((cat) => (
-                      <option key={cat} value={cat}>
+                      <option key={cat} value={cat} className="bg-white dark:bg-[#1A4D41]">
                         {cat}
                       </option>
                     ))}
@@ -229,68 +229,68 @@ export default function EditStudioPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-[#858A90] uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-semibold text-[#123C32]/70 dark:text-[#F4F0E5]/70 uppercase tracking-wider mb-2">
                     Hourly Rate ($ USD) *
                   </label>
                   <div className="relative">
-                    <DollarSign className="absolute left-3.5 top-3.5 w-4 h-4 text-[#858A90]" />
+                    <DollarSign className="absolute left-3.5 top-3.5 w-4 h-4 text-[#123C32]/50 dark:text-[#F4F0E5]/50" />
                     <input
                       type="number"
                       required
                       min="1"
                       value={hourlyRate}
                       onChange={(e) => setHourlyRate(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#17191C] border border-[#32363C] text-sm text-[#F5F0E8] focus:outline-none focus:border-[#E7A65A] transition-colors"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#F4F0E5]/60 dark:bg-[#123C32]/50 border border-[#123C32]/15 dark:border-white/15 text-sm text-[#123C32] dark:text-[#F4F0E5] focus:outline-none focus:border-[#C5A66A] transition-colors"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#858A90] uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-semibold text-[#123C32]/70 dark:text-[#F4F0E5]/70 uppercase tracking-wider mb-2">
                     Security Deposit ($)
                   </label>
                   <div className="relative">
-                    <DollarSign className="absolute left-3.5 top-3.5 w-4 h-4 text-[#858A90]" />
+                    <DollarSign className="absolute left-3.5 top-3.5 w-4 h-4 text-[#123C32]/50 dark:text-[#F4F0E5]/50" />
                     <input
                       type="number"
                       min="0"
                       value={securityDeposit}
                       onChange={(e) => setSecurityDeposit(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#17191C] border border-[#32363C] text-sm text-[#F5F0E8] focus:outline-none focus:border-[#E7A65A] transition-colors"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#F4F0E5]/60 dark:bg-[#123C32]/50 border border-[#123C32]/15 dark:border-white/15 text-sm text-[#123C32] dark:text-[#F4F0E5] focus:outline-none focus:border-[#C5A66A] transition-colors"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#858A90] uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-semibold text-[#123C32]/70 dark:text-[#F4F0E5]/70 uppercase tracking-wider mb-2">
                     Max Capacity *
                   </label>
                   <div className="relative">
-                    <Users className="absolute left-3.5 top-3.5 w-4 h-4 text-[#858A90]" />
+                    <Users className="absolute left-3.5 top-3.5 w-4 h-4 text-[#123C32]/50 dark:text-[#F4F0E5]/50" />
                     <input
                       type="number"
                       required
                       min="1"
                       value={maxCapacity}
                       onChange={(e) => setMaxCapacity(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#17191C] border border-[#32363C] text-sm text-[#F5F0E8] focus:outline-none focus:border-[#E7A65A] transition-colors"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#F4F0E5]/60 dark:bg-[#123C32]/50 border border-[#123C32]/15 dark:border-white/15 text-sm text-[#123C32] dark:text-[#F4F0E5] focus:outline-none focus:border-[#C5A66A] transition-colors"
                     />
                   </div>
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#858A90] uppercase tracking-wider mb-2">
+                <label className="block text-xs font-semibold text-[#123C32]/70 dark:text-[#F4F0E5]/70 uppercase tracking-wider mb-2">
                   Facility Address / Location *
                 </label>
                 <div className="relative">
-                  <MapPin className="absolute left-3.5 top-3.5 w-4 h-4 text-[#858A90]" />
+                  <MapPin className="absolute left-3.5 top-3.5 w-4 h-4 text-[#123C32]/50 dark:text-[#F4F0E5]/50" />
                   <input
                     type="text"
                     required
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#17191C] border border-[#32363C] text-sm text-[#F5F0E8] focus:outline-none focus:border-[#E7A65A] transition-colors"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#F4F0E5]/60 dark:bg-[#123C32]/50 border border-[#123C32]/15 dark:border-white/15 text-sm text-[#123C32] dark:text-[#F4F0E5] focus:outline-none focus:border-[#C5A66A] transition-colors"
                   />
                 </div>
               </div>
@@ -298,28 +298,28 @@ export default function EditStudioPage() {
 
             {/* Media */}
             <div className="space-y-4">
-              <h2 className="font-serif text-xl font-bold text-[#F5F0E8] border-b border-[#32363C] pb-2">
+              <h2 className="font-serif text-xl font-bold text-[#123C32] dark:text-[#F4F0E5] border-b border-[#123C32]/10 dark:border-white/10 pb-2">
                 Cover Photography
               </h2>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
                 <div>
-                  <label className="block text-xs font-semibold text-[#858A90] uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-semibold text-[#123C32]/70 dark:text-[#F4F0E5]/70 uppercase tracking-wider mb-2">
                     Cover Image URL *
                   </label>
                   <div className="relative">
-                    <ImageIcon className="absolute left-3.5 top-3.5 w-4 h-4 text-[#858A90]" />
+                    <ImageIcon className="absolute left-3.5 top-3.5 w-4 h-4 text-[#123C32]/50 dark:text-[#F4F0E5]/50" />
                     <input
                       type="url"
                       required
                       value={imageUrl}
                       onChange={(e) => setImageUrl(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#17191C] border border-[#32363C] text-sm text-[#F5F0E8] focus:outline-none focus:border-[#E7A65A] transition-colors"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#F4F0E5]/60 dark:bg-[#123C32]/50 border border-[#123C32]/15 dark:border-white/15 text-sm text-[#123C32] dark:text-[#F4F0E5] focus:outline-none focus:border-[#C5A66A] transition-colors"
                     />
                   </div>
                 </div>
 
-                <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden border border-[#32363C] bg-[#17191C]">
+                <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden border border-[#123C32]/10 dark:border-white/10 bg-[#F4F0E5]/40 dark:bg-[#123C32]/40 shadow-sm">
                   {imageUrl ? (
                     <Image
                       src={imageUrl}
@@ -336,7 +336,7 @@ export default function EditStudioPage() {
 
             {/* Amenities */}
             <div className="space-y-4">
-              <h2 className="font-serif text-xl font-bold text-[#F5F0E8] border-b border-[#32363C] pb-2">
+              <h2 className="font-serif text-xl font-bold text-[#123C32] dark:text-[#F4F0E5] border-b border-[#123C32]/10 dark:border-white/10 pb-2">
                 Amenities & Equipment
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
@@ -347,15 +347,15 @@ export default function EditStudioPage() {
                       key={amenity}
                       type="button"
                       onClick={() => toggleAmenity(amenity)}
-                      className={`flex items-center gap-2.5 p-3 rounded-xl border text-xs font-medium text-left transition-all ${
+                      className={`flex items-center gap-2.5 p-3 rounded-xl border text-xs font-semibold text-left transition-all ${
                         isChecked
-                          ? "bg-[#E7A65A]/15 border-[#E7A65A] text-[#F5F0E8]"
-                          : "bg-[#17191C] border-[#32363C] text-[#858A90] hover:border-white/20"
+                          ? "bg-[#C5A66A]/20 border-[#C5A66A] text-[#123C32] dark:text-[#F4F0E5]"
+                          : "bg-[#F4F0E5]/40 dark:bg-[#123C32]/40 border-[#123C32]/10 dark:border-white/10 text-[#123C32]/70 dark:text-[#F4F0E5]/70 hover:border-[#C5A66A]"
                       }`}
                     >
                       <CheckCircle2
-                        className={`w-4 h-4 flex-shrink-0 ${
-                          isChecked ? "text-[#E7A65A]" : "text-[#858A90]/40"
+                        className={`w-4 h-4 flex-shrink-0 transition-colors ${
+                          isChecked ? "text-[#C5A66A]" : "text-[#123C32]/30 dark:text-[#F4F0E5]/30"
                         }`}
                       />
                       <span className="line-clamp-1">{amenity}</span>
@@ -367,7 +367,7 @@ export default function EditStudioPage() {
 
             {/* Description */}
             <div className="space-y-4">
-              <h2 className="font-serif text-xl font-bold text-[#F5F0E8] border-b border-[#32363C] pb-2">
+              <h2 className="font-serif text-xl font-bold text-[#123C32] dark:text-[#F4F0E5] border-b border-[#123C32]/10 dark:border-white/10 pb-2">
                 Overview & Description
               </h2>
               <textarea
@@ -375,12 +375,12 @@ export default function EditStudioPage() {
                 rows={4}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-[#17191C] border border-[#32363C] text-sm text-[#F5F0E8] focus:outline-none focus:border-[#E7A65A] transition-colors resize-none"
+                className="w-full px-4 py-3 rounded-xl bg-[#F4F0E5]/60 dark:bg-[#123C32]/50 border border-[#123C32]/15 dark:border-white/15 text-sm text-[#123C32] dark:text-[#F4F0E5] focus:outline-none focus:border-[#C5A66A] transition-colors resize-none"
               />
             </div>
 
             {/* Actions */}
-            <div className="pt-4 flex items-center justify-end gap-4 border-t border-[#32363C]">
+            <div className="pt-4 flex items-center justify-end gap-4 border-t border-[#123C32]/10 dark:border-white/10">
               <Button
                 type="button"
                 variant="ghost"
@@ -395,7 +395,7 @@ export default function EditStudioPage() {
                 variant="primary"
                 size="lg"
                 disabled={isSubmitting}
-                className="gap-2 font-semibold shadow-lg shadow-[#E7A65A]/20"
+                className="gap-2 font-semibold shadow-sm"
               >
                 {isSubmitting ? (
                   <>

@@ -3,73 +3,60 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Camera, Clapperboard, Mic, Music, Palette, ArrowRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 interface CategoryCardProps {
-  id: string;
+  id?: string;
   name: string;
+  slug?: string;
   description: string;
-  count: string;
-  icon: string;
-  image: string;
+  imageUrl?: string;
+  image?: string;
+  count?: number | string;
+  icon?: string;
 }
 
-const ICON_MAP: Record<string, React.ReactNode> = {
-  Camera: <Camera className="w-5 h-5" />,
-  Clapperboard: <Clapperboard className="w-5 h-5" />,
-  Mic: <Mic className="w-5 h-5" />,
-  Music: <Music className="w-5 h-5" />,
-  Palette: <Palette className="w-5 h-5" />,
-};
-
 export function CategoryCard({
-  id,
   name,
   description,
-  count,
-  icon,
+  imageUrl,
   image,
+  count,
 }: CategoryCardProps) {
+  const displayImage = imageUrl || image || "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=800&auto=format&fit=crop";
+
   return (
     <Link
-      href={`/studios?category=${encodeURIComponent(id)}`}
-      className="group relative flex flex-col justify-end h-80 rounded-2xl overflow-hidden border border-[#32363C] hover:border-[#E7A65A]/60 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-black/50"
-      style={{ position: "relative" }}
+      href={`/studios?category=${encodeURIComponent(name)}`}
+      className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white dark:bg-[#1A4D41] border border-[#123C32]/12 dark:border-white/10 p-5 shadow-sm hover:shadow-xl hover:border-[#C5A66A] transition-all duration-300"
     >
-      {/* Background Image with Zoom */}
-      <div className="absolute inset-0 z-0 overflow-hidden" style={{ position: "absolute" }}>
+      <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden mb-4 bg-[#F4F0E5] dark:bg-[#123C32]" style={{ position: "relative" }}>
         <Image
-          src={image}
+          src={displayImage}
           alt={name}
           fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 20vw"
-          className="object-cover object-center transition-transform duration-700 group-hover:scale-110"
+          sizes="(max-width: 768px) 100vw, 20vw"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        {/* Gradient Overlay for high-contrast text */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#17191C] via-[#17191C]/70 to-[#17191C]/20 group-hover:via-[#17191C]/60 transition-all duration-300" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        {count !== undefined && (
+          <span className="absolute bottom-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-black/60 backdrop-blur-sm text-[10px] font-semibold text-[#F4F0E5] border border-white/10">
+            {typeof count === "number" ? `${count}+ Available` : `${count} Available`}
+          </span>
+        )}
       </div>
 
-      {/* Floating Category Icon & Count badge */}
-      <div className="absolute top-4 left-4 right-4 z-10 flex items-center justify-between">
-        <div className="w-10 h-10 rounded-xl bg-[#17191C]/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-[#E7A65A] group-hover:bg-[#E7A65A] group-hover:text-[#17191C] transition-colors duration-300 shadow-md">
-          {ICON_MAP[icon] || <Camera className="w-5 h-5" />}
+      <div>
+        <div className="flex items-center justify-between mb-1">
+          <h3 className="font-serif text-base font-bold text-[#123C32] dark:text-[#F4F0E5] group-hover:text-[#C5A66A] transition-colors">
+            {name}
+          </h3>
+          <ArrowUpRight className="w-4 h-4 text-[#123C32]/40 dark:text-[#F4F0E5]/40 group-hover:text-[#C5A66A] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
         </div>
-        <span className="text-[11px] font-semibold tracking-wider uppercase px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[#F5F0E8] border border-white/10">
-          {count}
-        </span>
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10 p-5">
-        <h3 className="font-serif text-xl font-bold text-[#F5F0E8] mb-1.5 group-hover:text-[#E7A65A] transition-colors flex items-center justify-between">
-          <span>{name}</span>
-          <ArrowRight className="w-4 h-4 text-[#E7A65A] opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
-        </h3>
-        <p className="text-xs text-[#858A90] line-clamp-2 leading-relaxed">
+        <p className="text-xs text-[#123C32]/70 dark:text-[#F4F0E5]/70 line-clamp-2 leading-relaxed">
           {description}
         </p>
       </div>
     </Link>
   );
 }
-

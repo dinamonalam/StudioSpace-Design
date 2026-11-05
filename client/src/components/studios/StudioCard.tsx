@@ -34,7 +34,7 @@ export function StudioCard({ studio, isWishlisted = false }: StudioCardProps) {
     setIsToggling(true);
 
     const nextState = !favorite;
-    setFavorite(nextState); // optimistic update
+    setFavorite(nextState);
 
     try {
       const res = await toggleWishlistApi(studio._id);
@@ -42,7 +42,7 @@ export function StudioCard({ studio, isWishlisted = false }: StudioCardProps) {
         setFavorite(res.isWishlisted);
         toast.success(res.message || (res.isWishlisted ? "Saved to wishlist" : "Removed from wishlist"));
       } else {
-        setFavorite(!nextState); // revert on error
+        setFavorite(!nextState);
         toast.error("Failed to update wishlist.");
       }
     } catch {
@@ -54,10 +54,10 @@ export function StudioCard({ studio, isWishlisted = false }: StudioCardProps) {
   };
 
   return (
-    <div className="group relative flex flex-col h-full rounded-2xl bg-[#24272B] border border-[#32363C] hover:border-[#E7A65A]/50 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-black/40 overflow-hidden">
+    <div className="group relative flex flex-col h-full rounded-2xl bg-white dark:bg-[#1A4D41] border border-[#123C32]/12 dark:border-white/10 hover:border-[#C5A66A] transition-all duration-300 shadow-sm hover:shadow-xl overflow-hidden">
       {/* Studio Image & Badges */}
       <div
-        className="relative aspect-[16/10] w-full overflow-hidden bg-[#17191C]"
+        className="relative aspect-[16/10] w-full overflow-hidden bg-[#F4F0E5] dark:bg-[#123C32]"
         style={{ position: "relative" }}
       >
         <Image
@@ -72,39 +72,36 @@ export function StudioCard({ studio, isWishlisted = false }: StudioCardProps) {
 
         {/* Category Badge */}
         <div className="absolute top-3.5 left-3.5 z-10">
-          <Badge
-            variant="primary"
-            className="backdrop-blur-md bg-[#17191C]/80 border-white/10 text-xs font-semibold px-3 py-1 text-[#E7A65A]"
-          >
+          <span className="backdrop-blur-md bg-[#123C32]/85 text-[#C5A66A] text-xs font-semibold px-3 py-1 rounded-full border border-white/10">
             {studio.category}
-          </Badge>
+          </span>
         </div>
 
         {/* Wishlist Button (Challenge Feature) */}
         <button
           onClick={toggleFavorite}
           aria-label={favorite ? "Remove from wishlist" : "Add to wishlist"}
-          className="absolute top-3.5 right-3.5 z-10 w-9 h-9 rounded-full bg-[#17191C]/70 backdrop-blur-md border border-white/10 flex items-center justify-center text-[#F5F0E8] hover:text-red-400 hover:scale-110 active:scale-95 transition-all duration-200"
+          className="absolute top-3.5 right-3.5 z-10 w-9 h-9 rounded-full bg-black/50 backdrop-blur-md border border-white/15 flex items-center justify-center text-white hover:text-red-400 hover:scale-110 active:scale-95 transition-all duration-200"
         >
           <Heart
             className={`w-4 h-4 transition-colors ${
-              favorite ? "fill-red-500 text-red-500" : "text-[#F5F0E8]"
+              favorite ? "fill-red-500 text-red-500" : "text-white"
             }`}
           />
         </button>
 
-        {/* Capacity Indicator (bottom left of image) */}
-        <div className="absolute bottom-3 left-3.5 z-10 flex items-center gap-1.5 text-xs text-[#F5F0E8] font-medium bg-black/50 backdrop-blur-sm px-2.5 py-1 rounded-md">
-          <Users className="w-3.5 h-3.5 text-[#E7A65A]" />
-          <span>Up to {studio.maxCapacity} creators</span>
+        {/* Capacity Indicator */}
+        <div className="absolute bottom-3 left-3.5 z-10 flex items-center gap-1.5 text-xs text-white font-medium bg-black/55 backdrop-blur-sm px-2.5 py-1 rounded-md">
+          <Users className="w-3.5 h-3.5 text-[#C5A66A]" />
+          <span>Up to {studio.maxCapacity} guests</span>
         </div>
 
-        {/* Rating Badge (bottom right of image) */}
-        <div className="absolute bottom-3 right-3.5 z-10 flex items-center gap-1 text-xs font-semibold text-[#F5F0E8] bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-md border border-white/10">
-          <Star className="w-3.5 h-3.5 fill-[#E7A65A] text-[#E7A65A]" />
+        {/* Rating Badge */}
+        <div className="absolute bottom-3 right-3.5 z-10 flex items-center gap-1 text-xs font-semibold text-white bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-md border border-white/10">
+          <Star className="w-3.5 h-3.5 fill-[#C5A66A] text-[#C5A66A]" />
           <span>{studio.rating.toFixed(1)}</span>
           {studio.reviewsCount ? (
-            <span className="text-[#858A90]">({studio.reviewsCount})</span>
+            <span className="text-white/70">({studio.reviewsCount})</span>
           ) : null}
         </div>
       </div>
@@ -113,13 +110,13 @@ export function StudioCard({ studio, isWishlisted = false }: StudioCardProps) {
       <div className="p-5 flex-1 flex flex-col justify-between">
         <div>
           {/* Location */}
-          <div className="flex items-center gap-1.5 text-xs text-[#858A90] mb-2">
-            <MapPin className="w-3.5 h-3.5 text-[#E7A65A] shrink-0" />
+          <div className="flex items-center gap-1.5 text-xs text-[#123C32]/70 dark:text-[#F4F0E5]/70 mb-2">
+            <MapPin className="w-3.5 h-3.5 text-[#C5A66A] shrink-0" />
             <span className="truncate">{studio.location}</span>
           </div>
 
           {/* Title */}
-          <h3 className="font-serif text-lg font-bold text-[#F5F0E8] group-hover:text-[#E7A65A] transition-colors line-clamp-1 mb-2">
+          <h3 className="font-serif text-base sm:text-lg font-bold text-[#123C32] dark:text-[#F4F0E5] group-hover:text-[#C5A66A] transition-colors line-clamp-1 mb-2">
             {studio.title}
           </h3>
 
@@ -128,13 +125,13 @@ export function StudioCard({ studio, isWishlisted = false }: StudioCardProps) {
             {studio.amenities.slice(0, 2).map((amenity, idx) => (
               <span
                 key={idx}
-                className="text-[11px] px-2 py-0.5 rounded bg-[#17191C]/70 text-[#858A90] border border-white/5 truncate max-w-[150px]"
+                className="text-[11px] px-2.5 py-0.5 rounded-full bg-[#F4F0E5] dark:bg-[#123C32] text-[#123C32]/80 dark:text-[#F4F0E5]/80 border border-[#123C32]/10 dark:border-white/5 truncate max-w-[150px]"
               >
                 {amenity}
               </span>
             ))}
             {studio.amenities.length > 2 && (
-              <span className="text-[11px] px-2 py-0.5 rounded bg-[#17191C]/70 text-[#858A90] border border-white/5">
+              <span className="text-[11px] px-2 py-0.5 rounded-full bg-[#F4F0E5] dark:bg-[#123C32] text-[#123C32]/70 dark:text-[#F4F0E5]/70 border border-[#123C32]/10 dark:border-white/5">
                 +{studio.amenities.length - 2} more
               </span>
             )}
@@ -142,24 +139,26 @@ export function StudioCard({ studio, isWishlisted = false }: StudioCardProps) {
         </div>
 
         {/* Price & View Details Action */}
-        <div className="pt-4 border-t border-[#32363C] flex items-center justify-between mt-auto">
+        <div className="pt-4 border-t border-[#123C32]/10 dark:border-white/10 flex items-center justify-between mt-auto">
           <div>
             <div className="flex items-baseline gap-1">
-              <span className="text-xl font-bold text-[#E7A65A]">
+              <span className="font-serif text-xl font-bold text-[#C5A66A]">
                 ${studio.hourlyRate}
               </span>
-              <span className="text-xs text-[#858A90] font-normal">/ hr</span>
+              <span className="text-xs text-[#123C32]/60 dark:text-[#F4F0E5]/60 font-sans">
+                / hr
+              </span>
             </div>
-            <span className="text-[10px] text-[#858A90] block">
-              ${studio.securityDeposit} deposit
+            <span className="text-[10px] text-[#123C32]/50 dark:text-[#F4F0E5]/50 block">
+              +${studio.securityDeposit} deposit
             </span>
           </div>
 
           <Link href={`/studios/${studio._id}`}>
             <Button
-              variant="outline"
+              variant="secondary"
               size="sm"
-              className="gap-1.5 group-hover:bg-[#E7A65A] group-hover:text-[#17191C] group-hover:border-[#E7A65A] transition-all"
+              className="gap-1.5 text-xs font-semibold"
             >
               <span>View Details</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
@@ -170,4 +169,3 @@ export function StudioCard({ studio, isWishlisted = false }: StudioCardProps) {
     </div>
   );
 }
-

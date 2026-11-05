@@ -34,32 +34,32 @@ const ASSURANCES = [
 
 export function HostGuaranteeSection() {
   return (
-    <section className="py-24 bg-[#121316] border-t border-[#32363C] relative">
+    <section className="py-24 sm:py-28 bg-[#EBE5D6]/40 dark:bg-[#0E3028] border-t border-[#123C32]/10 dark:border-white/10 relative transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Column: Heading & Platform Trust Statement */}
-          <div className="lg:col-span-5 space-y-6">
-            <span className="text-xs uppercase font-semibold text-[#E7A65A] tracking-widest block">
+          <div className="lg:col-span-5 space-y-5">
+            <span className="text-xs uppercase font-semibold text-[#C5A66A] tracking-widest block">
               Creator & Host Protections
             </span>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F5F0E8] leading-tight">
+            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#123C32] dark:text-[#F4F0E5] leading-tight">
               Create With Complete Confidence
             </h2>
-            <p className="text-base text-[#858A90] leading-relaxed">
-              We eliminate the friction and vulnerability of traditional studio leasing. Whether you manage a multi-million-dollar cinema stage or run a boutique daylight loft, our built-in protections keep productions safe.
+            <p className="text-xs sm:text-sm text-[#123C32]/75 dark:text-[#F4F0E5]/75 leading-relaxed">
+              We eliminate the friction and vulnerability of traditional studio leasing. Whether you manage a cinema stage or run a daylight loft, our built-in protections keep productions safe.
             </p>
 
-            <ul className="space-y-3 pt-2 text-sm text-[#F5F0E8]">
+            <ul className="space-y-2.5 pt-2 text-xs sm:text-sm text-[#123C32] dark:text-[#F4F0E5] font-medium">
               <li className="flex items-center gap-3">
-                <CheckCircle2 className="w-5 h-5 text-[#E7A65A] shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-[#C5A66A] shrink-0" />
                 <span>Automatic security deposit pre-authorizations</span>
               </li>
               <li className="flex items-center gap-3">
-                <CheckCircle2 className="w-5 h-5 text-[#E7A65A] shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-[#C5A66A] shrink-0" />
                 <span>Standardized peer-to-peer production license agreement</span>
               </li>
               <li className="flex items-center gap-3">
-                <CheckCircle2 className="w-5 h-5 text-[#E7A65A] shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-[#C5A66A] shrink-0" />
                 <span>Transparent hourly overtime and equipment rates</span>
               </li>
             </ul>
@@ -72,22 +72,22 @@ export function HostGuaranteeSection() {
               return (
                 <div
                   key={item.title}
-                  className="p-6 rounded-2xl bg-[#17191C] border border-[#32363C] hover:border-[#E7A65A]/40 transition-all duration-300 shadow-md group"
+                  className="p-6 rounded-2xl bg-white dark:bg-[#1A4D41] border border-[#123C32]/12 dark:border-white/10 hover:border-[#C5A66A] transition-all duration-300 shadow-sm hover:shadow-xl group"
                 >
                   <div className="flex items-center justify-between mb-4">
-                    <div className="w-11 h-11 rounded-xl bg-[#24272B] border border-white/5 flex items-center justify-center text-[#E7A65A] group-hover:bg-[#E7A65A] group-hover:text-[#17191C] transition-colors">
+                    <div className="w-10 h-10 rounded-xl bg-[#F4F0E5] dark:bg-[#123C32] border border-[#123C32]/10 dark:border-white/10 flex items-center justify-center text-[#C5A66A] group-hover:bg-[#C5A66A] group-hover:text-[#123C32] transition-colors">
                       <Icon className="w-5 h-5" />
                     </div>
-                    <span className="text-[10px] uppercase font-semibold text-[#858A90] tracking-wider bg-white/5 px-2 py-0.5 rounded-full border border-white/5">
+                    <span className="text-[10px] font-semibold text-[#123C32] dark:text-[#C5A66A] bg-[#C5A66A]/15 px-2.5 py-0.5 rounded-full border border-[#C5A66A]/30">
                       {item.badge}
                     </span>
                   </div>
 
-                  <h3 className="font-serif text-base font-bold text-[#F5F0E8] mb-2 group-hover:text-[#E7A65A] transition-colors">
+                  <h3 className="font-serif text-base font-bold text-[#123C32] dark:text-[#F4F0E5] mb-2 group-hover:text-[#C5A66A] transition-colors">
                     {item.title}
                   </h3>
 
-                  <p className="text-xs text-[#858A90] leading-relaxed">
+                  <p className="text-xs text-[#123C32]/70 dark:text-[#F4F0E5]/70 leading-relaxed">
                     {item.description}
                   </p>
                 </div>
@@ -99,4 +99,3 @@ export function HostGuaranteeSection() {
     </section>
   );
 }
-
