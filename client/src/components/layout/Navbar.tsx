@@ -63,39 +63,42 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[#123C32]/10 dark:border-white/10 bg-[#F4F0E5]/90 dark:bg-[#123C32]/90 backdrop-blur-xl transition-colors duration-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-        {/* Brand Logo */}
-        <div className="flex items-center gap-8">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        {/* Brand Logo on Left */}
+        <div className="flex items-center">
           <StudioLogo size="md" />
-
-          {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1.5" aria-label="Main Navigation">
-            {NAV_LINKS.map((link) => {
-              const isActive =
-                link.href === "/"
-                  ? pathname === "/"
-                  : pathname.startsWith(link.href);
-
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={cn(
-                    "relative px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg",
-                    isActive
-                      ? "text-[#123C32] dark:text-[#C5A66A] font-semibold bg-[#123C32]/8 dark:bg-white/10"
-                      : "text-[#123C32]/75 dark:text-[#F4F0E5]/75 hover:text-[#C5A66A] hover:bg-[#123C32]/5 dark:hover:bg-white/5"
-                  )}
-                >
-                  {link.label}
-                  {isActive && (
-                    <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-[#C5A66A] rounded-full" />
-                  )}
-                </Link>
-              );
-            })}
-          </nav>
         </div>
+
+        {/* Desktop Navigation Links in the Center */}
+        <nav
+          className="hidden lg:flex items-center gap-1.5 absolute left-1/2 -translate-x-1/2"
+          aria-label="Main Navigation"
+        >
+          {NAV_LINKS.map((link) => {
+            const isActive =
+              link.href === "/"
+                ? pathname === "/"
+                : pathname.startsWith(link.href);
+
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={cn(
+                  "relative px-4 py-2 text-sm font-semibold transition-all duration-200 rounded-lg",
+                  isActive
+                    ? "text-[#123C32] dark:text-[#C5A66A] bg-[#123C32]/8 dark:bg-white/10"
+                    : "text-[#123C32]/75 dark:text-[#F4F0E5]/75 hover:text-[#C5A66A] hover:bg-[#123C32]/5 dark:hover:bg-white/5"
+                )}
+              >
+                {link.label}
+                {isActive && (
+                  <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-[#C5A66A] rounded-full" />
+                )}
+              </Link>
+            );
+          })}
+        </nav>
 
         {/* Right Action Area */}
         <div className="hidden lg:flex items-center gap-4">
