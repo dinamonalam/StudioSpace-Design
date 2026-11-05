@@ -61,3 +61,4 @@ The backend REST API for **StudioSpace — Peer-to-Peer Creative Workspace & Pro
 
 - **Host**: `host@studiospace.io` / `Password123`
 - **Creator**: `creator@studiospace.io` / `Password123`
+
