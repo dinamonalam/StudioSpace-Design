@@ -2,7 +2,8 @@
 
 A peer-to-peer marketplace where creators book photo studios, film stages, podcast rooms, and music suites by the hour.
 
-**Live Site:** https://client-gray-iota-24.vercel.app
+**Live Site:** https://client-gray-iota-24.vercel.app  
+**Server API:** https://studiospace-server-hzs8.onrender.com
 
 
 ## Features
