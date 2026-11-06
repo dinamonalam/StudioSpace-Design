@@ -3,7 +3,6 @@
 A peer-to-peer marketplace where creators book photo studios, film stages, podcast rooms, and music suites by the hour.
 
 **Live Site:** https://client-gray-iota-24.vercel.app  
-**Server API:** https://studiospace-server-hzs8.onrender.com
 
 
 ## Features
@@ -60,6 +59,5 @@ Run both apps:
 ```bash
 npm run dev
 ```
-Client: http://localhost:3000 · Server: http://localhost:5000
 
 > If MongoDB isn't running, the server falls back to in-memory mode with seeded data.

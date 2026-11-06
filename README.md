@@ -59,6 +59,5 @@ Run both apps:
 ```bash
 npm run dev
 ```
-Client: http://localhost:3000 · Server: http://localhost:5000
 
 > If MongoDB isn't running, the server falls back to in-memory mode with seeded data.
